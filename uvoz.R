@@ -24,7 +24,7 @@ osebe$prebivalisce <- sample(poste$posta)
 #posiljka <- read.csv('posiljka.csv')
 
 #novo zgenerirana baza, 10 000 podatkov - boljše
-posiljke <- read.csv('posiljke.csv')
+posiljke <- read.csv('posiljkee.csv')
 
 #k tabeli posiljke smo dodali posiljatelja in naslovnika, od koder lahko tudi razberemo
 #vstopno in izstopno mesto posiljke
