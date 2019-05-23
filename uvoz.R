@@ -28,9 +28,9 @@ posiljke <- read.csv('posiljkee.csv')
 
 #k tabeli posiljke smo dodali posiljatelja in naslovnika, od koder lahko tudi razberemo
 #vstopno in izstopno mesto posiljke
-posiljke$posiljatelj <- osebe$ime
-posiljke$naslovnik <- sample(osebe$ime)
+posiljke$posiljatelj <- osebe$uporabnisko_ime
+posiljke$naslovnik <- sample(osebe$uporabnisko_ime)
 
 #kjer je vmesni datum 0, damo tudi da tudi vmesni kraj 0,
 #saj je pošiljka šla direktno od posiljatelja k naslovniku, ni se vmes ustavljala
-posiljke$vmesni_kraj <- sample(poste$posta) 
+posiljke$vmesni_kraj <- sample(poste$postna_st) 
