@@ -90,66 +90,56 @@ finally = {
     # Koda v finally bloku se izvede, preden program konÄa z napako
   })
 }
-# 
-# #Funcija, ki vstavi podatke
-# insert_data <- function(){
-#   tryCatch({
-#     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
-#     
-#     dbWriteTable(conn, name="izvajalec", izvajalec, append=T, row.names=FALSE)
-#     dbWriteTable(conn, name="album", album, append=T, row.names=FALSE)
-#     dbWriteTable(conn, name="zvrst", zvrst, append=T, row.names=FALSE)
-#     dbWriteTable(conn, name="pesem", pesem, append=T, row.names=FALSE)
-#     dbWriteTable(conn, name="izvaja", izvaja, append=T, row.names=FALSE)
-#     dbWriteTable(conn, name="ima", ima, append=T, row.names=FALSE)
-#     dbWriteTable(conn, name="nosi", nosi, append=T, row.names=FALSE)
-#     dbWriteTable(conn, name="nahaja", nahaja, append=T, row.names=FALSE)
-#     
-#   }, finally = {
-#     dbDisconnect(conn) 
-#     
-#   })
-# }
-# 
-# 
-# pravice <- function(){
-#   # Uporabimo tryCatch,(da se poveÅ¾emo in bazo in odveÅ¾emo)
-#   # da prisilimo prekinitev povezave v primeru napake
-#   tryCatch({
-#     # Vzpostavimo povezavo
-#     conn <- dbConnect(drv, dbname = db, host = host,#drv=s Äim se povezujemo
-#                       user = user, password = password)
-#     
-#     dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_marinas TO tajad WITH GRANT OPTION"))
-#     dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_marinas TO veronikan WITH GRANT OPTION"))
-#     
-#     dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO tajad WITH GRANT OPTION"))
-#     dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO veronikan WITH GRANT OPTION"))
-#     
-#     dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO tajad WITH GRANT OPTION"))
-#     dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO veronikan WITH GRANT OPTION"))
-#     dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO marinas WITH GRANT OPTION"))
-#     
-#     dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO tajad WITH GRANT OPTION"))
-#     dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO veronikan WITH GRANT OPTION"))
-#     dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO marinas WITH GRANT OPTION"))
-#     
-#     dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_marinas TO javnost"))
-#     dbSendQuery(conn, build_sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost"))
-#     
-#     
-#     
-#   }, finally = {
-#     # Na koncu nujno prekinemo povezavo z bazo,
-#     # saj preveÄ odprtih povezav ne smemo imeti
-#     dbDisconnect(conn) #PREKINEMO POVEZAVO
-#     # Koda v finally bloku se izvede, preden program konÄa z napako
-#   })
-# }
-# 
-# pravice()
-# delete_table()
-# create_table()
-# insert_data()
-# 
-# #con <- src_postgres(dbname = db, host = host, user = user, password = password)
+insert_data <- function(){
+  tryCatch({
+    conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
+    
+    dbWriteTable(conn, name="oseba", osebe, append=T, row.names=FALSE)
+    dbWriteTable(conn, name="posiljka", posiljkee, append=T, row.names=FALSE)
+  
+  }, finally = {
+    dbDisconnect(conn) 
+    
+  })
+}
+
+
+pravice <- function(){
+  # Uporabimo tryCatch,(da se poveemo in bazo in odveemo)
+  # da prisilimo prekinitev povezave v primeru napake
+  tryCatch({
+    # Vzpostavimo povezavo
+    conn <- dbConnect(drv, dbname = db, host = host,#drv=s èim se povezujemo
+                      user = user, password = password)
+    
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_ajdas TO anjazk WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_ajdas TO spelao WITH GRANT OPTION"))
+    
+    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO anjazk WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO spelao WITH GRANT OPTION"))
+    
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO anjazk WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO ajdas WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO spelao WITH GRANT OPTION"))
+    
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anjazk WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO ajdas WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO spelao WITH GRANT OPTION"))
+    
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_ajdas TO javnost"))
+    dbSendQuery(conn, build_sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost"))
+    
+    
+    
+  }, finally = {
+    # Na koncu nujno prekinemo povezavo z bazo,
+    # saj preveè odprtih povezav ne smemo imeti
+    dbDisconnect(conn) #PREKINEMO POVEZAVO
+    # Koda v finally bloku se izvede, preden program konèa z napako
+  })
+}
+
+pravice()
+delete_table()
+create_table()
+insert_data()
