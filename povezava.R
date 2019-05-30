@@ -43,8 +43,8 @@ create_table <- function(){
     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
     
     # Glavne tabele
-    oseba <- dbSendQuery(conn, build_sql("CREATE TABLE oseba (
-                                              emso INTEGER PRIMARY KEY,
+    osebe <- dbSendQuery(conn, build_sql("CREATE TABLE osebe (
+                                              uporabnisko_ime INTEGER PRIMARY KEY,
                                               ime text NOT NULL,
                                                priimek text NOT NULL,
                                                tel_st INTEGER NOT NULL,
@@ -52,11 +52,11 @@ create_table <- function(){
                                              naslov text NOT NULL,
                                          odda INTEGER NOT NULL)"))
     
-   posta <- dbSendQuery(conn, build_sql("CREATE TABLE posta(
+   poste <- dbSendQuery(conn, build_sql("CREATE TABLE poste(
                                          postna_stevilka INTEGER REFERENCES oseba(odda),
                                           kraj text NOT NULL)"))
 
-   posiljka <- dbSendQuery(conn, build_sql("CREATE TABLE posiljka(
+   posiljke <- dbSendQuery(conn, build_sql("CREATE TABLE posiljke(
                                          id_posiljke INTEGER PRIMARY KEY,
                                          teza INTEGER NOT NULL,
                                          odkupnina INTEGER NOT NULL,
@@ -66,10 +66,13 @@ create_table <- function(){
                            
 
 
-     nahajalisce <- dbSendQuery(conn, build_sql("CREATE TABLE nahajalisce(
-                                         id_posiljke INTEGER REFERENCES posiljka(id_posiljke),
-                                        datum DATE references posiljka(datum_oddaje )"))
-
+     vmesno_nahajalisce <- dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce(
+     
+                                                       vmesni_kraj INTEGER REFERENCES posta(emso)
+                                                       vmesna_postaja 
+     )")
+     
+                                         
 
     dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO ajdas WITH GRANT OPTION"))
     dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO  anjazk WITH GRANT OPTION"))
@@ -94,8 +97,8 @@ insert_data <- function(){
   tryCatch({
     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
     
-    dbWriteTable(conn, name="oseba", osebe, append=T, row.names=FALSE)
-    dbWriteTable(conn, name="posiljka", posiljkee, append=T, row.names=FALSE)
+    dbWriteTable(conn, name="osebe", osebe, append=T, row.names=FALSE)
+    dbWriteTable(conn, name="posiljke", posiljke, append=T, row.names=FALSE)
   
   }, finally = {
     dbDisconnect(conn) 

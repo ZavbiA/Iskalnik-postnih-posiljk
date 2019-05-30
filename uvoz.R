@@ -14,7 +14,7 @@ osebe <- read.csv('osebe.csv')
 
 #Treba je pretvoriti stolpca uporabnisko_ime in telefonska v numeric.
 
-osebe$prebivalisce <- sample(poste$posta) #Premesamo stolpec posta
+osebe$prebivalisce <- sample(poste$naziv_poste) #Premesamo stolpec posta
 
 #Zgeneriramo se tabelo posiljke, 10 000 podatkov.
 posiljke <- read.csv('posiljkee.csv')
