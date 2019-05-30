@@ -66,11 +66,11 @@ create_table <- function(){
                            
 
 
-     vmesno_nahajalisce <- dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce(
-     
-                                                       vmesni_kraj INTEGER REFERENCES posta(emso)
-                                                       vmesna_postaja 
-     )")
+     # vmesno_nahajalisce <- dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce(
+     # 
+     #                                                   vmesni_kraj INTEGER REFERENCES posta(emso)
+     #                                                   vmesna_postaja 
+     # )")
      
                                          
 
