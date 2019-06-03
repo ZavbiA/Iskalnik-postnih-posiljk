@@ -1,5 +1,6 @@
 library(readxl)
 library(dplyr)
+library(readr)
 
 #Najprej uvozimo seznam post.
 poste <- read.csv2(file = "seznam_1.csv")
@@ -11,22 +12,29 @@ colnames(poste) <- c("postna_st", "naziv_poste")
 
 #Nato uvozimo tabelo osebe
 osebe <- read.csv('osebe.csv')
+#Pretvorimo stolpca uporabnisko_ime in telefonska v tip numeric:
+osebe$uporabnisko_ime <- gsub("-", "", osebe$uporabnisko_ime) %>% parse_number()
+osebe$telefonska <- gsub("-", "", osebe$telefonska) %>% parse_number()
 
-#Treba je pretvoriti stolpca uporabnisko_ime in telefonska v numeric.
-
-osebe$prebivalisce <- sample(poste$naziv_poste) #Premesamo stolpec posta
+osebe$prebivalisce <- sample(poste$naziv_poste) #Premesamo stolpec posta.
 
 #Zgeneriramo se tabelo posiljke, 10 000 podatkov.
 posiljke <- read.csv('posiljkee.csv')
 
-#k tabeli posiljke smo dodali posiljatelja in naslovnika, od koder lahko tudi razberemo
-#vstopno in izstopno mesto posiljke
+#Stolpca datum_postaja in datum_prispe pretvorimo v tip date:
+posiljke$datum_oddaje <- as.character(posiljke$datum_oddaje)
+posiljke$datum_prispe <- as.character(posiljke$datum_prispe)
+posiljke$vmesna_postaja <- as.character(posiljke$vmesna_postaja)
+posiljke$datum_oddaje <- parse_date(posiljke$datum_oddaje, format = "%m/%d/%Y")
+posiljke$datum_prispe <- parse_datetime(posiljke$datum_prispe, format = "%m/%d/%Y %I:%M %p")
+posiljke$vmesna_postaja <- parse_datetime(posiljke$vmesna_postaja, format = "%m/%d/%Y %I:%M %p")
+
+#K tabeli posiljke smo dodale posiljatelja in naslovnika, od koder lahko tudi
+#razberemo vstopno in izstopno mesto posiljke.
 posiljke$posiljatelj <- osebe$uporabnisko_ime
 posiljke$naslovnik <- sample(osebe$uporabnisko_ime) #spet premesamo stolpec
 
-#stolpec datum, datum_postaja in datum_prispe moramo pretvorit v date?
-
-#kjer je vmesni datum 0, damo tudi da tudi vmesni kraj 0,
+#Kjer je vmesni datum 0, damo tudi da tudi vmesni kraj 0,
 #saj je posiljka sla direktno od posiljatelja k naslovniku, ni se vmes ustavljala
 posiljke$vmesni_kraj <- sample(poste$postna_st)
 

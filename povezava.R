@@ -11,7 +11,6 @@ source("uvoz.r", encoding="UTF-8")
 drv <- dbDriver("PostgreSQL") 
 
 # Funkcija za brisanje tabel
-# Funkcija za brisanje tabel
 delete_table <- function(){
   # Uporabimo funkcijo tryCatch,
   # da prisilimo prekinitev povezave v primeru napake
@@ -23,9 +22,9 @@ delete_table <- function(){
     # ki se navezujejo na druge
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS oseba CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posta CASCADE"))
-    dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posiljka  CASCADE"))
+    dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posiljka CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS nahajalisce CASCADE"))
-    dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posiljatelj  CASCADE"))
+    dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posiljatelj CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS naslovnik CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS nahajalisce CASCADE"))
   }, finally = {
