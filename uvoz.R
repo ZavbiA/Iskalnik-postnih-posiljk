@@ -1,6 +1,7 @@
 library(readxl)
 library(dplyr)
 library(readr)
+library(digest)
 
 #Najprej uvozimo seznam post.
 poste <- read.csv2(file = "seznam_1.csv")
@@ -16,7 +17,13 @@ osebe <- read.csv('osebe.csv')
 osebe$uporabnisko_ime <- gsub("-", "", osebe$uporabnisko_ime) %>% parse_number()
 osebe$telefonska <- gsub("-", "", osebe$telefonska) %>% parse_number()
 
-osebe$prebivalisce <- sample(poste$naziv_poste) #Premesamo stolpec posta.
+#Stolpec geslo spremenimo, da to niso vec prava gesla, ampak hash.
+osebe$geslo <- sapply(osebe$geslo, digest, algo="md5")
+
+#Dodamo in premesamo stolpec prebivalisce.
+osebe$prebivalisce <- sample(poste$naziv_poste)
+#Ta vrstica nekaj naredi, da to ni vec tabela?
+is.table(osebe)
 
 #Zgeneriramo se tabelo posiljke, 10 000 podatkov.
 posiljke <- read.csv('posiljkee.csv')
