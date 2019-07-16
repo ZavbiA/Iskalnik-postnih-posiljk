@@ -18,7 +18,7 @@ delete_table <- function(){
     # Vzpostavimo povezavo z bazo
     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
     
-    # Èe tabela obstaja, jo zbrišemo, ter najprej zbrišemo tiste,
+    # ?e tabela obstaja, jo zbri?emo, ter najprej zbri?emo tiste,
     # ki se navezujejo na druge
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS oseba CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posta CASCADE"))
@@ -107,18 +107,18 @@ insert_data <- function(){
 
 
 pravice <- function(){
-  # Uporabimo tryCatch,(da se povežemo in bazo in odvežemo)
+  # Uporabimo tryCatch,(da se pove?emo in bazo in odve?emo)
   # da prisilimo prekinitev povezave v primeru napake
   tryCatch({
     # Vzpostavimo povezavo
-    conn <- dbConnect(drv, dbname = db, host = host,#drv=s èim se povezujemo
+    conn <- dbConnect(drv, dbname = db, host = host,#drv=s ?im se povezujemo
                       user = user, password = password)
     
-    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_ajdas TO anjazk WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_ajdas TO spelao WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO anjazk WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO ajdas WITH GRANT OPTION"))
     
     dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO anjazk WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO spelao WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO ajdas WITH GRANT OPTION"))
     
     dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO anjazk WITH GRANT OPTION"))
     dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO ajdas WITH GRANT OPTION"))
@@ -128,20 +128,20 @@ pravice <- function(){
     dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO ajdas WITH GRANT OPTION"))
     dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO spelao WITH GRANT OPTION"))
     
-    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2018_ajdas TO javnost"))
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO javnost"))
     dbSendQuery(conn, build_sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost"))
     
     
     
   }, finally = {
     # Na koncu nujno prekinemo povezavo z bazo,
-    # saj preveè odprtih povezav ne smemo imeti
+    # saj preve? odprtih povezav ne smemo imeti
     dbDisconnect(conn) #PREKINEMO POVEZAVO
-    # Koda v finally bloku se izvede, preden program konèa z napako
+    # Koda v finally bloku se izvede, preden program kon?a z napako
   })
 }
 
-pravice()
-delete_table()
-create_table()
-insert_data()
+#pravice()
+#delete_table()
+#create_table()
+#insert_data()
