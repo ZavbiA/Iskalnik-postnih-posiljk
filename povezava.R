@@ -98,6 +98,7 @@ insert_data <- function(){
     dbWriteTable(conn, name="osebe", osebe, append=T, row.names=FALSE)
     dbWriteTable(conn, name="poste", poste, append=T, row.names=FALSE)
     dbWriteTable(conn, name="posiljke", posiljke, append=T, row.names=FALSE)
+    dbWriteTable(conn, name="vmesno_nahajalisce", vmesno_nahajalisce, append=T, row.names=FALSE)
   
   }, finally = {
     dbDisconnect(conn) 
