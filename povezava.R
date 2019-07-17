@@ -18,7 +18,7 @@ delete_table <- function(){
     # Vzpostavimo povezavo z bazo
     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
     
-    # ?e tabela obstaja, jo zbri?emo, ter najprej zbri?emo tiste,
+    # Se tabela obstaja, jo zbrisemo, ter najprej zbrisemo tiste,
     # ki se navezujejo na druge
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS oseba CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posta CASCADE"))
@@ -35,7 +35,7 @@ delete_table <- function(){
 
 #Funkcija, ki ustvari tabele
 create_table <- function(){
-  # Uporabimo tryCatch (da se povežemo in bazo in odvežemo)
+  # Uporabimo tryCatch (da se povezemo in bazo in odvezemo)
   # da prisilimo prekinitev povezave v primeru napake
   tryCatch({
     # Vzpostavimo povezavo
@@ -87,9 +87,9 @@ create_table <- function(){
   },
 finally = {
     # Na koncu nujno prekinemo povezavo z bazo,
-    # saj preveč odprtih povezav ne smemo imeti
+    # saj prevec odprtih povezav ne smemo imeti
     dbDisconnect(conn) #PREKINEMO POVEZAVO
-    # Koda v finally bloku se izvede, preden program konča z napako
+    # Koda v finally bloku se izvede, preden program konca z napako
   })
 }
 insert_data <- function(){
@@ -107,7 +107,7 @@ insert_data <- function(){
 
 
 pravice <- function(){
-  # Uporabimo tryCatch,(da se pove?emo in bazo in odve?emo)
+  # Uporabimo tryCatch,(da se povezemo in bazo in odvezemo)
   # da prisilimo prekinitev povezave v primeru napake
   tryCatch({
     # Vzpostavimo povezavo
@@ -135,9 +135,9 @@ pravice <- function(){
     
   }, finally = {
     # Na koncu nujno prekinemo povezavo z bazo,
-    # saj preve? odprtih povezav ne smemo imeti
+    # saj prevec odprtih povezav ne smemo imeti
     dbDisconnect(conn) #PREKINEMO POVEZAVO
-    # Koda v finally bloku se izvede, preden program kon?a z napako
+    # Koda v finally bloku se izvede, preden program konca z napako
   })
 }
 
