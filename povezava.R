@@ -1,10 +1,10 @@
+#Neposredno klicanje SQL ukazov v R.
 library(RPostgreSQL)
 library(dplyr)
 library(dbplyr)
 
 #Uvoz:
 source("auth.R", encoding="UTF-8")
-#source("auth_public.R", encoding="UTF-8")
 source("uvoz.r", encoding="UTF-8")
 
 # Povezemo se z gonilnikom za PostgreSQL
@@ -35,7 +35,7 @@ delete_table <- function(){
 
 #Funkcija, ki ustvari tabele
 create_table <- function(){
-  # Uporabimo tryCatch (da se povezemo in bazo in odvezemo)
+  # Uporabimo tryCatch (da se povezemo na bazo in odvezemo)
   # da prisilimo prekinitev povezave v primeru napake
   tryCatch({
     # Vzpostavimo povezavo
@@ -45,23 +45,23 @@ create_table <- function(){
     osebe <- dbSendQuery(conn, build_sql("CREATE TABLE osebe (
                                               uporabnisko_ime INTEGER PRIMARY KEY,
                                               ime text NOT NULL,
-                                               priimek text NOT NULL,
-                                               tel_st INTEGER NOT NULL,
-                                               email text NOT NULL,
-                                             naslov text NOT NULL,
-                                         odda INTEGER NOT NULL)"))
+                                              priimek text NOT NULL,
+                                              tel_st INTEGER NOT NULL,
+                                              email text NOT NULL,
+                                              naslov text NOT NULL,
+                                              odda INTEGER NOT NULL)"))
     
    poste <- dbSendQuery(conn, build_sql("CREATE TABLE poste(
-                                         postna_stevilka INTEGER REFERENCES oseba(odda),
-                                          kraj text NOT NULL)"))
+                                            postna_stevilka INTEGER REFERENCES oseba(emso),
+                                            naziv_poste text NOT NULL)"))
 
    posiljke <- dbSendQuery(conn, build_sql("CREATE TABLE posiljke(
-                                         id_posiljke INTEGER PRIMARY KEY,
-                                         teza INTEGER NOT NULL,
-                                         odkupnina INTEGER NOT NULL,
-                                         datum_oddaje DATE NOT NULL,
-                                        naslovnik INTEGER REFERENCES oseba(emso)),
-                                           posiljatelj INTEGER REFERENCES oseba(emso)"))
+                                               id_posiljke INTEGER PRIMARY KEY,
+                                               teza INTEGER NOT NULL,
+                                               odkupnina INTEGER NOT NULL,
+                                               datum_oddaje DATE NOT NULL,
+                                               naslovnik INTEGER REFERENCES oseba(emso)),
+                                                posiljatelj INTEGER REFERENCES oseba(emso)"))
                            
 
 
@@ -97,6 +97,7 @@ insert_data <- function(){
     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
     
     dbWriteTable(conn, name="osebe", osebe, append=T, row.names=FALSE)
+    dbWriteTable(conn, name="poste", poste, append=T, row.names=FALSE)
     dbWriteTable(conn, name="posiljke", posiljke, append=T, row.names=FALSE)
   
   }, finally = {
@@ -111,7 +112,7 @@ pravice <- function(){
   # da prisilimo prekinitev povezave v primeru napake
   tryCatch({
     # Vzpostavimo povezavo
-    conn <- dbConnect(drv, dbname = db, host = host,#drv=s cim se povezujemo
+    conn <- dbConnect(drv, dbname = db, host = host,#drv = s cim se povezujemo
                       user = user, password = password)
     
     dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO anjazk WITH GRANT OPTION"))
@@ -144,4 +145,4 @@ pravice <- function(){
 #pravice()
 #delete_table()
 #create_table()
-#insert_data()
+insert_data()

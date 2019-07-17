@@ -9,7 +9,7 @@ poste <- read.csv2(file = "seznam_1.csv")
 poste <- poste[-c(201:240),]
 poste <- poste[-c(273:282),]
 poste <- poste[-c(159:161),]
-colnames(poste) <- c("postna_st", "naziv_poste")
+colnames(poste) <- c("postna_stevilka", "naziv_poste")
 
 #Nato uvozimo tabelo osebe
 osebe <- read.csv('osebe.csv')
@@ -43,7 +43,7 @@ posiljke$naslovnik <- sample(osebe$uporabnisko_ime) #spet premesamo stolpec
 
 #Kjer je vmesni datum 0, damo tudi da tudi vmesni kraj 0,
 #saj je posiljka sla direktno od posiljatelja k naslovniku, ni se vmes ustavljala
-posiljke$vmesni_kraj <- sample(poste$postna_st)
+posiljke$vmesni_kraj <- sample(poste$postna_stevilka)
 
 #Naredimo se tabelo za vmesno nahajalisce.
 vmesno_nahajalisce <- posiljke
