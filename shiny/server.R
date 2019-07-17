@@ -28,7 +28,7 @@ shinyServer(function(input, output,session) {
   
 #-------------------------------------------------------------------------------------------------
       
-#ZAVIHEK TRGOVINA
+#ZAVIHEK POSTA
   
   output$izborPoste <- renderUI({
     
