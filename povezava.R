@@ -3,8 +3,8 @@ library(dplyr)
 library(dbplyr)
 
 #Uvoz:
-source("auth.R", encoding="UTF-8")
-#source("auth_public.R", encoding="UTF-8")
+source("auth_public.R", encoding="UTF-8")
+#source("auth.R", encoding="UTF-8")
 source("uvoz.r", encoding="UTF-8")
 
 # Povezemo se z gonilnikom za PostgreSQL
@@ -18,7 +18,7 @@ delete_table <- function(){
     # Vzpostavimo povezavo z bazo
     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
     
-    # Se tabela obstaja, jo zbrisemo, ter najprej zbrisemo tiste,
+    # Ce tabela obstaja, jo zbrisemo, ter najprej zbrisemo tiste,
     # ki se navezujejo na druge
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS oseba CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posta CASCADE"))
@@ -111,7 +111,7 @@ pravice <- function(){
   # da prisilimo prekinitev povezave v primeru napake
   tryCatch({
     # Vzpostavimo povezavo
-    conn <- dbConnect(drv, dbname = db, host = host,#drv=s ?im se povezujemo
+    conn <- dbConnect(drv, dbname = db, host = host,#drv=s cim se povezujemo
                       user = user, password = password)
     
     dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO anjazk WITH GRANT OPTION"))

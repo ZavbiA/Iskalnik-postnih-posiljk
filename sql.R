@@ -3,7 +3,7 @@ library(dplyr)
 library(dbplyr)
 library(RPostgreSQL)
 
-source("auth.R")
+source("auth_public.R")
 
 # Povezemo se z gonilnikom za PostgreSQL
 drv <- dbDriver("PostgreSQL")
