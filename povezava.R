@@ -68,8 +68,7 @@ create_table <- function(){
     vmesno_nahajalisce <- dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce(
                                                         id_posiljke INTEGER PRIMARY KEY
                                                         datum_oddaje DATE NOT NULL
-                                                        vmesni_kraj INTEGER REFERENCES oseba(emso)
-      "))
+                                                        vmesni_kraj INTEGER REFERENCES oseba(emso)"))
      
                                          
 
