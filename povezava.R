@@ -3,8 +3,8 @@ library(dplyr)
 library(dbplyr)
 
 #Uvoz:
-source("auth_public.R", encoding="UTF-8")
-#source("auth.R", encoding="UTF-8")
+source("auth.R", encoding="UTF-8")
+#source("auth_public.R", encoding="UTF-8")
 source("uvoz.r", encoding="UTF-8")
 
 # Povezemo se z gonilnikom za PostgreSQL
