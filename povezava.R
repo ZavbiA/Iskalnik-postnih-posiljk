@@ -142,7 +142,7 @@ pravice <- function(){
   })
 }
 
-#pravice()
-#delete_table()
-#create_table()
+pravice()
+delete_table()
+create_table()
 insert_data()
