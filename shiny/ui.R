@@ -5,12 +5,12 @@ shinyUI(fluidPage(
                   
   vpisniPanel <- tabPanel("SignIn", value="signIn",
                           fluidPage(
-                            HTML('<body background = "https://raw.githubusercontent.com/ZavbiA/Iskalnik-postnih-posiljk/4b197f8d80fd5b3135ddf0c7ccc31c8fc9f3b492/slike/footer-map-bg.png"></body>'),
+                            HTML('<body background = "https://raw.githubusercontent.com/ZavbiA/Iskalnik-postnih-posiljk/master/slike/digital-mail-2-1.jpg"></body>'),
                             fluidRow(
                               column(width = 12,
-                                     align = "middle",
-                                     textInput("userName","User name", value= "" ),
-                                     passwordInput("password","Password", value = ""),
+                                     align = "center",
+                                     textInput("userName","User name", value= "", placeholder = "User name"),
+                                     passwordInput("password","Password", value = "", placeholder = "Password"),
                                      actionButton("signin_btn", "Sign In"),
                                      actionButton("signup_btn", "Sign Up"))
                     
@@ -32,7 +32,8 @@ registracijaPanel <- tabPanel("SignUp", value = "signUp",
                                 )
   )
   
-  
+
+
   
 
   # mainPanel(
