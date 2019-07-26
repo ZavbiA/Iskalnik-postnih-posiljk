@@ -32,8 +32,8 @@ shinyServer(function(input, output,session) {
   
 observeEvent(input$signin_btn,
                {signInReturn <- sign.in.user(input$userName, input$password)
-               if(signInReturn[[1]]==1){
-                 userID(signInReturn[[2]])
+               if(signInReturn ==1){
+                 # userID(signInReturn[[2]])
                  output$signUpBOOL <- eventReactive(input$signin_btn, 2)
                  loggedIn(TRUE)
                }else if(signInReturn[[1]]==0){
@@ -54,75 +54,93 @@ observeEvent(input$signin_btn,
                })
   
 # Sign in function
+# preveri_sign.in<- function(username, pass){
+#   success <- 0
+#   
+# }
+
+  
+  
+# geslo dobimo iz funkcije probi.upor.ime.geslo- če se ujema s pass je OK - pravilno geslo, drugače pa ni Ok,
+  # dodati moramo še funkcijo ki preveri če sploh obstaja tako uporabniško ime
 sign.in.user <- function(username, pass){
+  obstoj <- 0
+  geslo <- probi.upor.ime.geslo(username,pass)
+  if (geslo == pass){
+    obstoj <-1
+  }
+  returnValue(obstoj)
+}
+
     # Return a list. In the first place is an indicator of success:
     # 1 ... success
     # 0 ... error
     # -10 ... wrong username
     # The second place represents the userid if the login info is correct,
     # otherwise it's NULL
-    success <- 0
-    uporabnikID <- NULL
-    tryCatch({
-      drv <- dbDriver("PostgreSQL")
-      conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
-      userTable <- tbl(conn, "uporabnik")
-      obstoj <- 0
-      # obstoj = 0, ce username in geslo ne obstajata,  1 ce obstaja
-      uporabnik <- username
-      geslo <- pass
-      hashGesla <- (userTable %>% filter(username == uporabnik) %>% collect() %>% pull(hash))[[1]]
-      if(checkpw(geslo, hashGesla)){
-        obstoj <- 1
-      }
-      if(obstoj == 0){
-        success <- -10
-      }else{
-        uporabnikID <- (userTable %>% filter(username == uporabnik) %>%
-                          collect() %>% pull(id))[[1]]
-        success <- 1
-      }
-    },warning = function(w){
-      print(w)
-    },error = function(e){
-      print(e)
-    }, finally = {
-      dbDisconnect(conn)
-      return(list(success, uporabnikID))
-    })
-  }
-  
-  pridobi.ime.uporabnika <- function(userID){
-    # Pridobi ime vpisanega glede na userID
-    tryCatch({
-      drv <- dbDriver("PostgreSQL")
-      conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
-      sqlInput<- build_sql("SELECT uporabnisko_ime FROM osebe WHERE id=",userID, con = conn)
-      userid <- dbGetQuery(conn, sqlInput)
-    },finally = {
-      dbDisconnect(conn)
-      return(unname(unlist(userid)))
-    }
-    )
-  }
-  
+  #   success <- 0
+  #   uporabnikID <- NULL
+  #   tryCatch({
+  #     drv <- dbDriver("PostgreSQL")
+  #     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
+  #     userTable <- tbl(conn, "uporabnik")
+  #     obstoj <- 0
+  #     # obstoj = 0, ce username in geslo ne obstajata,  1 ce obstaja
+  #     uporabnik <- username
+  #     geslo <- pass
+  #     hashGesla <- (userTable %>% filter(username == uporabnik) %>% collect() %>% pull(hash))[[1]]
+  #     if(checkpw(geslo, hashGesla)){
+  #       obstoj <- 1
+  #     }
+  #     if(obstoj == 0){
+  #       success <- -10
+  #     }else{
+  #       uporabnikID <- (userTable %>% filter(username == uporabnik) %>%
+  #                         collect() %>% pull(id))[[1]]
+  #       success <- 1
+  #     }
+  #   },warning = function(w){
+  #     print(w)
+  #   },error = function(e){
+  #     print(e)
+  #   }, finally = {
+  #     dbDisconnect(conn)
+  #     return(list(success, uporabnikID))
+  #   })
+  # }
+  # 
+  # pridobi.ime.uporabnika <- function(userID){
+  #   # Pridobi ime vpisanega glede na userID
+  #   tryCatch({
+  #     drv <- dbDriver("PostgreSQL")
+  #     conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
+  #     sqlInput<- build_sql("SELECT uporabnisko_ime FROM osebe WHERE id=",userID, con = conn)
+  #     userid <- dbGetQuery(conn, sqlInput)
+  #   },finally = {
+  #     dbDisconnect(conn)
+  #     return(unname(unlist(userid)))
+  #   }
+  #   )
+  # }
+#   
+# // ta funkcija dobi geslo glede na uporabnisko ime
   probi.upor.ime.geslo <- function(userName, password){
     tryCatch({
       drv <- dbDriver("PostgreSQL")
       conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
-      sqlInput<- build_sql("SELECT uporabnisko_ime FROM osebe WHERE id=",userName, con = conn)
-      userid <- dbGetQuery(conn, sqlInput)
+      sqlInput<- build_sql("SELECT geslo FROM osebe WHERE uporabnisko_ime=",userName, con = conn)
+      user_pass <- dbGetQuery(conn, sqlInput)
       
     },finally = {
       dbDisconnect(conn)
-      return(unname(unlist(userid)))
+      # ta funkcija spodaj unlist user_pass ne dela... rade bi dobile samo vrednosti
+      return(unname(unlist(user_pass)))
     }
     )
     
   }
   
   
-
 
   
   
