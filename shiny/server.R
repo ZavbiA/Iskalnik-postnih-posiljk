@@ -2,6 +2,7 @@ library(shiny)
 library(dplyr)
 #library(dbplyr)
 library(RPostgreSQL)
+library(hash)
 #library(dbplyr)
 
 #ČE TI KDAJ NAPIŠE  DA SI PRESEGEL MAX POVEZAV, ZAŽENI TO:
