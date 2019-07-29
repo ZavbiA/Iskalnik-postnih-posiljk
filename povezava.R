@@ -46,13 +46,12 @@ create_table <- function(){
                                               uporabnisko_ime INTEGER PRIMARY KEY,
                                               ime text NOT NULL,
                                               priimek text NOT NULL,
-                                              tel_st INTEGER NOT NULL,
                                               email text NOT NULL,
-                                              naslov text NOT NULL,
-                                              odda INTEGER NOT NULL)"))
+                                              geslo text NOT NULL,
+                                              telefonska INTEGER NOT NULL)"))
     
    poste <- dbSendQuery(conn, build_sql("CREATE TABLE poste(
-                                            postna_stevilka INTEGER REFERENCES oseba(emso),
+                                            postna_stevilka INTEGER PRIMARY KEY,
                                             naziv_poste text NOT NULL)"))
 
    posiljke <- dbSendQuery(conn, build_sql("CREATE TABLE posiljke(
@@ -60,15 +59,15 @@ create_table <- function(){
                                                teza INTEGER NOT NULL,
                                                odkupnina INTEGER NOT NULL,
                                                datum_oddaje DATE NOT NULL,
-                                               naslovnik INTEGER REFERENCES oseba(emso)),
-                                                posiljatelj INTEGER REFERENCES oseba(emso)"))
+                                               naslovnik INTEGER REFERENCES osebe(uporabnisko_ime)),
+                                              posiljatelj INTEGER REFERENCES osebe(uporabnisko_ime)"))
                            
 
 
     vmesno_nahajalisce <- dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce(
                                                         id_posiljke INTEGER PRIMARY KEY
                                                         datum_oddaje DATE NOT NULL
-                                                        vmesni_kraj INTEGER REFERENCES oseba(emso)"))
+                                                        vmesni_kraj INTEGER REFERENCES poste(postna_stevilka)"))
      
                                          
 
