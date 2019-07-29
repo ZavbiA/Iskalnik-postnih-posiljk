@@ -21,27 +21,96 @@ vpisniPanel <- tabPanel("SignIn", value="signIn",
                             
                           )))
 
-
-
-shinyUI(
-  dashboardPage(
-    dashboardHeader(title="Pošta FMF"),
-    dashboardSidebar(
-      menuItem("Pomoč uporabnikom",tabName = "pomoc"),
-      menuItem("Navodila",tabName = "navodila")),
-    dashboardBody(vpisniPanel),
-    conditionalPanel(condition = "output.signUpBOOL=='1'",
-                     # Panel, ko je bila uspesna registracija
-                     titlePanel("Sledenje pošiljke"))
-                       
-
+iskalnikPosiljk <-
+  tabItems(
+    tabItem(
+      tabName = "oddane",
+      fluidRow(sidebarPanel(
+        # uiOutput(oddane.posiljke)
+      ))
+    ),
+    tabItem(
+      tabName = "prejete",
+      fluidRow(sidebarPanel(
+        # uiOutput(prejete.posiljke)
+      ))
+      
+    ),
+    tabItem(
+      tabName = "sporocilo",
+      fluidRow(
+        sidebarPanel(
+          textInput("sporocilo", "Poslji sporocilo", placeholder = "Sporocilo"),
+          actionButton(inputId ="poslji", label = "Pošlji"),
+          verbatimTextOutput("value")),
+        mainPanel(p("V primeru tezav, pustite sporočilo skupaj z imenom in priimkom ter številko poštne številke."),
+                  DT::dataTableOutput("komentiranje")
+          
+                     )
+        
+      )
+      
     )
+    
   )
 
 
-
-
-
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      menuItem("Pomoč uporabnikom",tabName = "pomoc"),
+      menuItem("Navodila",tabName = "navodila")
+    ),
+    mainPanel(
+      conditionalPanel(condition = "output.signUpBOOL!='1' && output.signUpBOOL!='2'",#&& false", 
+                       vpisniPanel)
+      # ,
+      # conditionalPanel(condition = "output.signUpBOOL=='2'",
+      #                  textInput("Pregled vasih posiljk","")
+      #                  # ,
+      #                  # iskalnikPosiljk
+      #                  
+                       
+                       
+      )
+    )
+  )
+# )
+  
+  
+  
+#   dashboardPage(
+#     dashboardHeader(title="Pošta FMF"),
+#     dashboardSidebar(
+#       menuItem("Pomoč uporabnikom",tabName = "pomoc"),
+#       menuItem("Navodila",tabName = "navodila")
+#       ),
+#     dashboardBody(
+#     conditionalPanel(condition = "output.signUpBOOL!='1' && output.signUpBOOL!='2'",#&& false", 
+#                      vpisniPanel),
+#     conditionalPanel(condition = "output.signUpBOOL=='2'",
+#                     dashboardPage(
+#                     dashboardHeader(title =  "Pregled vasih posiljk")),
+#                     dashboardSidebar(
+#                       menuItem("Pomoč uporabnikom",tabName = "pomoc"),
+#                       menuItem("Navodila",tabName = "navodila")
+#                       
+#                     ),
+#                     dashboardBody(iskalnikPosiljk)
+# 
+#     
+#       
+#     )
+# 
+#     )
+# )
+# )
+#   
+# 
+# 
+# 
+# 
+# 
 
 
 

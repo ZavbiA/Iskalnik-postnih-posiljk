@@ -59,6 +59,7 @@ create_table <- function(){
                                                teza INTEGER NOT NULL,
                                                odkupnina INTEGER NOT NULL,
                                                datum_oddaje DATE NOT NULL,
+                                              datum_prispe DATE NOT NULL,
                                                naslovnik INTEGER REFERENCES osebe(uporabnisko_ime)),
                                               posiljatelj INTEGER REFERENCES osebe(uporabnisko_ime)"))
                            
