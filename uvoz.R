@@ -15,6 +15,7 @@ colnames(poste) <- c("postna_stevilka", "naziv_poste")
 osebe <- read.csv('osebe.csv')
 #Pretvorimo stolpca uporabnisko_ime in telefonska v tip numeric:
 osebe$uporabnisko_ime <- gsub("-", "", osebe$uporabnisko_ime) %>% parse_number()
+# osebe$uporabnisko_ime <- toString(osebe$uporabnisko_ime)
 osebe$telefonska <- gsub("-", "", osebe$telefonska) %>% parse_number()
 
 #Stolpec geslo spremenimo, da to niso vec prava gesla, ampak hash.

@@ -1,8 +1,8 @@
 library(shiny)
 library(dplyr)
-#library(dbplyr)
 library(RPostgreSQL)
 library(hash)
+# source("../lib/libraries.R")
 #library(dbplyr)
 
 #ČE TI KDAJ NAPIŠE  DA SI PRESEGEL MAX POVEZAV, ZAŽENI TO:
@@ -42,7 +42,7 @@ observeEvent(input$signin_btn,
                if(signInReturn[[1]]==1){
                  userID(signInReturn[[2]])
                  output$signUpBOOL <- eventReactive(input$signin_btn, 2)
-                 loggedIn(TRUE)
+                 # loggedIn(TRUE)
                  # userID <- input$userName
                  # upam da se tu userID nastavi na pravo vrednosst 
                }else if(signInReturn[[1]]==0){
@@ -88,16 +88,18 @@ observeEvent(input$signin_btn,
       # obstoj = 0, ce username in geslo ne obstajata,  1 ce obstaja
       uporabnik <- username
       geslo <- pass
-      hashGesla <- (userTable %>% filter(uporabnisko_ime == uporabnik) %>% collect() %>% pull(hash))[[1]]
-      if(checkpw(geslo, hashGesla)){
-
+      hashGesla <- (userTable %>% filter(uporabnisko_ime == uporabnik) %>% collect() %>% pull(geslo))[[1]]
+      print(hashGesla)
+      if(pass == hashGesla){
         obstoj <- 1
+        uporabnikID <- (userTable %>% filter(uporabnisko_ime==uporabnik) %>%
+                          collect() %>% pull(uporabnisko_ime))[[1]]
       }
       if(obstoj == 0){
         success <- -10
       }else{
-        uporabnikID <- (userTable %>% filter(uporabnisko_ime == uporabnik) %>%
-                          collect() %>% pull(id))[[1]]
+        uporabnikID <- (userTable %>% filter(uporabnisko_ime==uporabnik) %>%
+                          collect() %>% pull(uporabnisko_ime))[[1]]
         success <- 1
       }
     },warning = function(w){
