@@ -66,9 +66,14 @@ ui <- fluidPage(
      
       conditionalPanel(condition = "output.signUpBOOL!='1' && output.signUpBOOL!='2'",#&& false", 
                        vpisniPanel)
-      # ,
-      # conditionalPanel(condition = "output.signUpBOOL=='2'",
-      #                  textInput("Pregled vasih posiljk","")
+       ,
+      conditionalPanel(condition = "output.signUpBOOL=='2'",
+                        titlePanel("Pregled vaših pošiljk"),
+                       tabsetPanel(
+                         tabPanel("Poslane pošiljke", tableOutput("oddane.posiljke")), 
+                         tabPanel("Prejete pošiljke", tableOutput("prejete.posiljke")) 
+                         
+                       
       #                  # ,
       #                  # iskalnikPosiljk
       #                  
@@ -77,7 +82,8 @@ ui <- fluidPage(
       )
     )
   )
-# )
+ )
+)
   
   
   

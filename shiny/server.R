@@ -20,7 +20,7 @@ shinyServer(function(input, output,session) {
   drv <- dbDriver("PostgreSQL") 
   conn <- dbConnect(drv, dbname = db, host = host,
                        user = user, password = password)
-  userID <- reactiveVal() 
+  userID <- reactiveVal()
   dbGetQuery(conn, "SET CLIENT_ENCODING TO 'utf8'; SET NAMES 'utf8'") #poskusim resiti rezave s sumniki
   
   cancel.onSessionEnded <- session$onSessionEnded(function() {
@@ -41,6 +41,7 @@ observeEvent(input$signin_btn,
                {signInReturn <- sign.in.user(input$userName, input$password)
                if(signInReturn[[1]]==1){
                  userID(signInReturn[[2]])
+
                  output$signUpBOOL <- eventReactive(input$signin_btn, 2)
                  # loggedIn(TRUE)
                  # userID <- input$userName
@@ -94,12 +95,14 @@ observeEvent(input$signin_btn,
         obstoj <- 1
         uporabnikID <- (userTable %>% filter(uporabnisko_ime==uporabnik) %>%
                           collect() %>% pull(uporabnisko_ime))[[1]]
+
       }
       if(obstoj == 0){
         success <- -10
       }else{
         uporabnikID <- (userTable %>% filter(uporabnisko_ime==uporabnik) %>%
                           collect() %>% pull(uporabnisko_ime))[[1]]
+        
         success <- 1
       }
     },warning = function(w){
@@ -131,19 +134,34 @@ observeEvent(input$signin_btn,
   
   
 ## oddane posiljke
-  # output$oddane.posiljke <- renderUI({
-  #   oddane_posiljke = dbGetQuery(conn, build_sql("SELECT id_posiljke, datum_oddaje, datum_prispe FROM posiljke WHERE posiljatelj =" userID + " ORDER BY datum_oddaje", con = conn))
-  #   selectInput("oddane",
-  #               label = "Oddane posiljke:",
-  #               choices = setNames(oddane_posiljke$id_posiljke, oddane_posiljke$datum_oddaje,oddane_posiljke$datum_prispe)
-  #   )
-  # })
-  # 
-  # 
-  # output$prejete.posiljke <- renderUI({
-  #   oddane.posiljke = dbGetQuery(conn, build_sql("SELECT id_posiljke, datum_oddaje, datum_prispe FROM posiljke WHERE naslovnik ="+ userID + " ORDER BY datum_oddaje", con = conn))
-  #   
-  # })
+ oddane <- reactive({
+    oddane_posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\" FROM posiljke WHERE posiljatelj =", userID() , con = conn))
+    oddane_posiljke_data
+    
+    
+    
+  })
+ output$oddane.posiljke <- DT :: renderDataTable({
+   tabela = oddane()
+   validate(need(nrow(tabela)>0, "ni podatkov"))
+   DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString")
+   })
+
+
+ 
+ 
+ 
+ 
+prejete<- reactive({
+    oddane.posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\"  FROM posiljke WHERE naslovnik =", userID(),con = conn))
+
+    })
+  output$prejete.posiljke <- DT :: renderDataTable({
+    tabela = prejete()
+    validate(need(nrow(tabela)>0, "ni podatkov"))
+    DT::datatable(tabela) %>% DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString")})
+  
+  
   
   
   # komentar
