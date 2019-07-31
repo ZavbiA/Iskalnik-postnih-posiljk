@@ -53,7 +53,7 @@ iskalnikPosiljk <-
 ui <- fluidPage(
   theme = shinytheme("cyborg"),
 
-  titlePanel("Posta FMF"),
+  titlePanel("Pošta FMF"),
   
   sidebarLayout(
     sidebarPanel(
