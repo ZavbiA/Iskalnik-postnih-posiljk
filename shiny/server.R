@@ -147,11 +147,8 @@ observeEvent(input$signin_btn,
    DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString")
    })
 
-
- 
- 
- 
- 
+  
+## prejete posiljke 
 prejete<- reactive({
     oddane.posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\"  FROM posiljke WHERE naslovnik =", userID(),con = conn))
 
