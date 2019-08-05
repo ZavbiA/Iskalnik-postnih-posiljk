@@ -16,39 +16,6 @@ vpisniPanel <- tabPanel("SignIn", value="signIn",
                             
                           )))
 
-iskalnikPosiljk <-
-  tabItems(
-    tabItem(
-      tabName = "oddane",
-      fluidRow(sidebarPanel(
-        # uiOutput(oddane.posiljke)
-      ))
-    ),
-    tabItem(
-      tabName = "prejete",
-      fluidRow(sidebarPanel(
-        # uiOutput(prejete.posiljke)
-      ))
-      
-    ),
-    tabItem(
-      tabName = "sporocilo",
-      fluidRow(
-        sidebarPanel(
-          textInput("sporocilo", "Poslji sporocilo", placeholder = "Sporocilo"),
-          actionButton(inputId ="poslji", label = "Pošlji"),
-          verbatimTextOutput("value")),
-        mainPanel(p("V primeru tezav, pustite sporočilo skupaj z imenom in priimkom ter številko poštne številke."),
-                  DT::dataTableOutput("komentiranje")
-          
-                     )
-        
-      )
-      
-    )
-    
-  )
-
 
 ui <- fluidPage(
   theme = shinytheme("cyborg"),
@@ -65,13 +32,19 @@ ui <- fluidPage(
     mainPanel(
      
       conditionalPanel(condition = "output.signUpBOOL!='1' && output.signUpBOOL!='2'",#&& false", 
-                       vpisniPanel)
-       ,
+                       vpisniPanel),
       conditionalPanel(condition = "output.signUpBOOL=='2'",
                         titlePanel("Pregled vaših pošiljk"),
-                       tabsetPanel(
-                         tabPanel("Poslane pošiljke", tableOutput("oddane.posiljke")), 
-                         tabPanel("Prejete pošiljke", tableOutput("prejete.posiljke")) 
+                        tabsetPanel(
+                         tabPanel("Poslane pošiljke", DT::dataTableOutput("oddane.posiljke")), 
+                         tabPanel("Prejete pošiljke", DT::dataTableOutput("prejete.posiljke")),
+                         tabPanel("Pomoč uporabnikom", 
+                                  textInput("sporocilo", "Poslji sporocilo", placeholder = "Sporocilo"),
+                                  actionButton(inputId ="poslji", label = "Pošlji"),
+                                  verbatimTextOutput("value")),
+                                  DT::dataTableOutput("komentiranje")
+                         )
+                       )
                          
                        
       #                  # ,
@@ -82,8 +55,8 @@ ui <- fluidPage(
       )
     )
   )
- )
-)
+ 
+
   
   
   

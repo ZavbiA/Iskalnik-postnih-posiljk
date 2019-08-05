@@ -1,6 +1,7 @@
 #Neposredno klicanje SQL ukazov v R.
 library(RPostgreSQL)
 library(dplyr)
+
 library(dbplyr)
 
 #Uvoz:
@@ -9,7 +10,7 @@ source("uvoz.r", encoding="UTF-8")
 
 # Povezemo se z gonilnikom za PostgreSQL
 drv <- dbDriver("PostgreSQL") 
-
+conn <- dbConnect(drv, dbname = db, host = host, user = user, password = password)
 # Funkcija za brisanje tabel
 delete_table <- function(){
   # Uporabimo funkcijo tryCatch,
@@ -27,6 +28,7 @@ delete_table <- function(){
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS posiljatelj CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS naslovnik CASCADE"))
     dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS nahajalisce CASCADE"))
+    dbSendQuery(conn,build_sql("DROP TABLE IF EXISTS sporocilo CASCADE"))
   }, finally = {
     dbDisconnect(conn)
   })
@@ -43,7 +45,8 @@ create_table <- function(){
     
     # Glavne tabele
     osebe <- dbSendQuery(conn, build_sql("CREATE TABLE osebe (
-                                              uporabnisko_ime INTEGER PRIMARY KEY,
+                                              id SERIAL PRIMARY KEY
+                                              uporabnisko_ime INTEGER,
                                               ime text NOT NULL,
                                               priimek text NOT NULL,
                                               email text NOT NULL,
@@ -69,6 +72,12 @@ create_table <- function(){
                                                         id_posiljke INTEGER PRIMARY KEY
                                                         datum_oddaje DATE NOT NULL
                                                         vmesni_kraj INTEGER REFERENCES poste(postna_stevilka)"))
+    
+    sporocilo <- dbSendQuery(conn, build_sql("CREATE TABLE sporocilo (
+                              id SERIAL PRIMARY KEY,
+                              uporabnisko_ime INTEGER,
+                              besedilo TEXT,
+                              cas TIMESTAMP )"))
      
                                          
 
@@ -99,6 +108,8 @@ insert_data <- function(){
     dbWriteTable(conn, name="poste", poste, append=T, row.names=FALSE)
     dbWriteTable(conn, name="posiljke", posiljke, append=T, row.names=FALSE)
     dbWriteTable(conn, name="vmesno_nahajalisce", vmesno_nahajalisce, append=T, row.names=FALSE)
+    dbWriteTable(conn, name="sporocilo", sporocilo, append=T, row.names=FALSE)
+    
   
   }, finally = {
     dbDisconnect(conn) 

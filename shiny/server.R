@@ -137,62 +137,62 @@ observeEvent(input$signin_btn,
  oddane <- reactive({
     oddane_posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\" FROM posiljke WHERE posiljatelj =", userID() , con = conn))
     oddane_posiljke_data
-    
-    
+    oddane_posiljke_data$`Datum prispetja` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum prispetja`))
+    oddane_posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum oddaje`))
     
   })
  output$oddane.posiljke <- DT :: renderDataTable({
    tabela = oddane()
    validate(need(nrow(tabela)>0, "ni podatkov"))
-   DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString")
+   DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString") %>% DT::formatStyle(columns = c('Datum oddaje', 'Datum prispetja'), color = 'black')
    })
 
   
 ## prejete posiljke 
 prejete<- reactive({
-    oddane.posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\"  FROM posiljke WHERE naslovnik =", userID(),con = conn))
+    prejete.posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\"  FROM posiljke WHERE naslovnik =", userID(),con = conn))
+    prejete.posiljke_data$`Datum prispetja` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum prispetja`))
+    prejete.posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum oddaje`))
+    
 
     })
   output$prejete.posiljke <- DT :: renderDataTable({
     tabela = prejete()
     validate(need(nrow(tabela)>0, "ni podatkov"))
-    DT::datatable(tabela) %>% DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString")})
+    DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString") %>% DT::formatStyle(columns = c('Datum oddaje', 'Datum prispetja'), color = 'black')
+    
+ 
   
-  
+  })
   
   
   # komentar
   observeEvent(input$poslji,{
     ideja <- renderText({input$sporocilo})
-    sql2 <- build_sql("INSERT INTO komentar (uporabnisko_ime,besedilo,datum)
+    sql2 <- build_sql("INSERT INTO sporocilo (uporabnisko_ime,besedilo,cas)
                       VALUES(",userID,",", input$sporocilo,",", ",NOW())", con = conn)  
     data2 <- dbGetQuery(conn, sql2)
     data2
-    shinyjs::reset("komentiranje") # reset po vpisu komentarja
+    shinyjs::reset("sporocilo") # reset po vpisu komentarja
   })
 
     
   
-  # najdi.komentar <- reactive({
-  #   input$poslji
-  #   validate(need(!is.null(input$vojna), "Izberi vojno!"))
-  #   sql_komentar <- build_sql("SELECT ime AS \"Uporabnik\", besedilo AS \"Komentar\", cas AS \"Cas\" FROM komentar
-  #                           WHERE vojna_id =",input$vojna, con = conn)
-  #   komentarji <- dbGetQuery(conn, sql_komentar)
-  #   validate(need(nrow(komentarji) > 0, "Ni komentarjev."))
-  #   komentarji
+najdi.komentar <- reactive({
+    input$poslji
+    sql_komentar <- build_sql("SELECT uporabnisko_ime AS \"Uporabnik\", besedilo AS \"Sporocilo\", cas AS \"Cas\" FROM sporocilo
+                            WHERE uporabnisko_ime =",userID, con = conn)
+    komentarji <- dbGetQuery(conn, sql_komentar)
+    validate(need(nrow(komentarji) > 0, "Ni komentarjev."))
+    komentarji
+  })
     
-  
-  # output$komentiranje <- DT::renderDataTable(DT::datatable(najdi.komentar()) %>%
-                                               # DT::formatDate("Cas", method="toLocaleString"))
+output$komentiranje<- DT::renderDataTable( DT::datatable(najdi.komentar()) %>% DT::formatDate("Cas", method="toLocaleString"))
   
   
 
-  
+})
 #-------------------------------------------------------------------------------------------------
   
-
-  
-  
- }) #ne zbriši
+ #ne zbriši
 
