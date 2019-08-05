@@ -4,7 +4,7 @@ library(dplyr)
 library(dbplyr)
 
 source("auth.R", encoding="UTF-8")
-source("uvoz.r", encoding="UTF-8")
+source("uvoz.R", encoding="UTF-8")
 
 # Povezemo se z gonilnikom za PostgreSQL
 drv <- dbDriver("PostgreSQL") 
