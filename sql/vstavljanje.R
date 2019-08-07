@@ -43,7 +43,7 @@ vstavljanje.oseba <- function(){
     # ali pa po tem, ko se ta konča z napako
   })
 }
-oseba <- vstavljanje.oseba()
+oseba_ <- vstavljanje.oseba()
 
 
 vstavljanje.posiljke <- function(){
@@ -60,18 +60,24 @@ vstavljanje.posiljke <- function(){
     
     for (i in 1:nrow(posiljke)){
       v <- posiljke[i, ]
-      dbSendQuery(conn, build_sql("INSERT INTO izdelek (id_posiljke,teza, datum_oddaje, datum_prispe, naslovnik, posiljatelj)
-                                  VALUES (", v[["id_posiljke"]], ", ",
+      dbSendQuery(conn, build_sql("INSERT INTO posiljke (id_posiljke,teza, datum_oddaje, datum_prispe, naslovnik, posiljatelj)
+                                  VALUES ( ", v[["ID"]], ", ",
                                   v[["teza"]], ", ",
-                                  v[["datum_oddaje"]], ", ",
-                                  v[["datum_prispe"]], ", ",
+                                  as.Date(v[["datum_oddaje"]], format="%m/%d/%Y"),", ",
+                                 # v[["datum_oddaje"]],", ",
+                                  as.Date( v[["datum_prispe"]],format="%m/%d/%Y"), ", ",
+                                  # v[["datum_prispe"]], ", ",
                                   v[["naslovnik"]], ", ",
                                   v[["posiljatelj"]], ")"))
 
     }
-    
-    
-    # Rezultat dobimo kot razpredelnico (data frame)
+   #  YYYY-MM-DD
+   #  "%Y-%m-%d"
+   # as.Date("4/15/2018",format="%m/%d/%Y")
+   #  
+   # s<- as.Date("4/15/2018")
+    # CONVERT(varchar, getdate(), 23)
+    # # Rezultat dobimo kot razpredelnico (data frame)
   }, finally = {
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj preveč odprtih povezav ne smemo imeti
@@ -81,7 +87,7 @@ vstavljanje.posiljke <- function(){
     # ali pa po tem, ko se ta konča z napako
   })
 }
-posiljke <- vstavljanje.posiljke()
+posiljke_ <- vstavljanje.posiljke()
 
 
 vstavljanje.poste <- function(){
@@ -102,8 +108,8 @@ vstavljanje.poste <- function(){
     for (i in 1:nrow(poste)){
       v <- poste[i, ]
       dbSendQuery(conn, build_sql("INSERT INTO poste (postna_stevilka, naziv_poste)
-                                    VALUES (", v[["postna_stevilka"]], ",
-                                    ",v[["naziv_poste"]], ")")) 
+                                    VALUES (",v[["postna_stevilka"]], ", ",
+                                              v[["naziv_poste"]], ")")) 
       
     }
     # Rezultat dobimo kot razpredelnico (data frame)
@@ -116,7 +122,7 @@ vstavljanje.poste <- function(){
     # ali pa po tem, ko se ta konča z napako
   })
 }
-poste <- vstavljanje.poste()
+poste_ <- vstavljanje.poste()
 
 vstavljanje.vmesno_nahajalisce <- function(){
   
@@ -132,10 +138,8 @@ vstavljanje.vmesno_nahajalisce <- function(){
     
     for (i in 1:nrow(vmesno_nahajalisce)){
       v <- vmesno_nahajalisce[i, ]
-      dbSendQuery(conn, build_sql("INSERT INTO podjetje (id_posiljke, vmesni_datum, vmesni_kraj)
-                                    VALUES (", v[["id_posiljke"]], ",
-                                    ",v[["vmesni_datum"]], ",
-                                    ",v[["vmesni_kraj"]], ")"))
+      dbSendQuery(conn, build_sql("INSERT INTO vmesno_nahajalisce (id_posiljke, vmesni_datum, vmesni_kraj)
+                                    VALUES (", v[["ID"]], ", ",as.Date(v[["datum_prispe"]], format="%m/%d/%Y"), ", ",v[["vmesni_kraj"]], ")"))
 
     }
     # Rezultat dobimo kot razpredelnico (data frame)
@@ -148,4 +152,4 @@ vstavljanje.vmesno_nahajalisce <- function(){
     # ali pa po tem, ko se ta konča z napako
   })
 }
-vmesno_nahajalisce <- vstavljanje.vmesno_nahajalisce
+vmesno_nahajalisce_ <- vstavljanje.vmesno_nahajalisce
