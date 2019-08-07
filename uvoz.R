@@ -35,7 +35,7 @@ posiljke$datum_prispe <- as.character(posiljke$datum_prispe)
 posiljke$vmesna_postaja <- as.character(posiljke$vmesna_postaja)
 posiljke$datum_oddaje <- parse_date(posiljke$datum_oddaje, format = "%m/%d/%Y")
 posiljke$datum_prispe <- parse_datetime(posiljke$datum_prispe, format = "%m/%d/%Y %I:%M %p")
-posiljke$vmesni_datum <- parse_datetime(posiljke$vmesna_postaja, format = "%m/%d/%Y %I:%M %p")
+posiljke$vmesna_postaja <- parse_datetime(posiljke$vmesna_postaja, format = "%m/%d/%Y %I:%M %p")
 
 #K tabeli posiljke smo dodale posiljatelja in naslovnika, od koder lahko tudi
 #razberemo vstopno in izstopno mesto posiljke.
@@ -48,7 +48,22 @@ posiljke$vmesni_kraj <- sample(poste$postna_stevilka)
 
 #Naredimo se tabelo za vmesno nahajalisce.
 vmesno_nahajalisce <- posiljke
-vmesno_nahajalisce <- vmesno_nahajalisce[,-c(2,3,4,6)]
+vmesno_nahajalisce <- vmesno_nahajalisce[,-c(2,3,5,6,7)]
+#zbrišemo vrstice, kjer pišiljka nima vmesnega nahajališča
+vmesno_nahajalisce <- vmesno_nahajalisce[-c(1:1500),]
 
 #Zdaj lahko izbrisemo vmesno postajo iz tabele posiljke.
 posiljke <- posiljke[,-c(4,8)]
+
+#Naredimo novo tabelo koncno_nahajalisce
+koncno_nahajalisce <- posiljke
+koncno_nahajalisce<-koncno_nahajalisce[,-c(2,3,5)]
+koncno_nahajalisce<-koncno_nahajalisce[-c(1:4000),]
+#namesto naslovnika želimo imeti napisano prebivališče
+koncno_nahajalisce$kraj_prispetja = osebe$prebivalisce[match(koncno_nahajalisce$naslovnik,osebe$uporabnisko_ime)]
+#namesto prebivališča želimo meti napisano poštno steviko, kamor posiljka prispe
+koncno_nahajalisce$posta_prispetja = poste$postna_stevilka[match(koncno_nahajalisce$kraj_prispetja,poste$naziv_poste)]
+koncno_nahajalisce<-koncno_nahajalisce[,-c(3,4)]
+
+#zbrisemo datum prispe iz tabele posiljke, ker je v drugi tabeli koncno nahajalisce
+posiljke <- posiljke[,-c(4)]
