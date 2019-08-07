@@ -9,8 +9,6 @@ source("uvoz.r", encoding="UTF-8")
 # Povezemo se z gonilnikom za PostgreSQL
 drv <- dbDriver("PostgreSQL")
 
-
-
 vstavljanje.oseba <- function(){
   
   # Uporabimo tryCatch,
@@ -40,7 +38,7 @@ vstavljanje.oseba <- function(){
     dbDisconnect(conn)
     # Koda v finally bloku se izvede v vsakem primeru
     # - bodisi ob koncu izvajanja try bloka,
-    # ali pa po tem, ko se ta konča z napako
+    # ali pa po tem, ko se ta konca z napako
   })
 }
 oseba <- vstavljanje.oseba()
