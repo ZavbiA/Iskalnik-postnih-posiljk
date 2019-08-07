@@ -35,7 +35,7 @@ posiljke$datum_prispe <- as.character(posiljke$datum_prispe)
 posiljke$vmesna_postaja <- as.character(posiljke$vmesna_postaja)
 posiljke$datum_oddaje <- parse_date(posiljke$datum_oddaje, format = "%m/%d/%Y")
 posiljke$datum_prispe <- parse_datetime(posiljke$datum_prispe, format = "%m/%d/%Y %I:%M %p")
-posiljke$vmesna_postaja <- parse_datetime(posiljke$vmesna_postaja, format = "%m/%d/%Y %I:%M %p")
+posiljke$vmesni_datum <- parse_datetime(posiljke$vmesna_postaja, format = "%m/%d/%Y %I:%M %p")
 
 #K tabeli posiljke smo dodale posiljatelja in naslovnika, od koder lahko tudi
 #razberemo vstopno in izstopno mesto posiljke.
@@ -48,7 +48,7 @@ posiljke$vmesni_kraj <- sample(poste$postna_stevilka)
 
 #Naredimo se tabelo za vmesno nahajalisce.
 vmesno_nahajalisce <- posiljke
-vmesno_nahajalisce <- vmesno_nahajalisce[,-c(2,3,5,6,7)]
+vmesno_nahajalisce <- vmesno_nahajalisce[,-c(2,3,4,6)]
 
 #Zdaj lahko izbrisemo vmesno postajo iz tabele posiljke.
 posiljke <- posiljke[,-c(4,8)]
