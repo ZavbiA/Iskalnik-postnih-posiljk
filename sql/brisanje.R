@@ -23,6 +23,7 @@ tryCatch({
   dbSendQuery(conn, build_sql("DROP TABLE posiljke CASCADE"))
   dbSendQuery(conn, build_sql("DROP TABLE vmesno_nahajalisce CASCADE"))
   dbSendQuery(conn, build_sql("DROP TABLE osebe CASCADE"))
+  dbSendQuery(conn, build_sql("DROP TABLE koncno_nahajalisce CASCADE"))
 
   #CASCADE zato da zbrise tabelo tudi ce je odvisna od ene druge
   # Rezultat dobimo kot razpredelnico (data frame)
