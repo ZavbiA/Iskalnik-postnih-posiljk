@@ -2,7 +2,7 @@
 library(dplyr)
 library(dbplyr)
 library(RPostgreSQL)
-
+source("libraries.r")
 source("auth.R")
 source("uvoz.r", encoding="UTF-8")
 
@@ -18,11 +18,12 @@ tryCatch({
   
   # Poizvedbo zgradimo s funkcijo build_sql
   # in izvedemo s funkcijo dbGetQuery
-  dbSendQuery(conn, build_sql("DROP TABLE osebe CASCADE"))
-  dbSendQuery(conn, build_sql("DROP TABLE posiljke CASCADE"))
-  dbSendQuery(conn, build_sql("DROP TABLE poste CASCADE"))
-  dbSendQuery(conn, build_sql("DROP TABLE vmesno_nahajalisce CASCADE"))
   dbSendQuery(conn, build_sql("DROP TABLE sporocilo CASCADE"))
+  dbSendQuery(conn, build_sql("DROP TABLE poste CASCADE"))
+  dbSendQuery(conn, build_sql("DROP TABLE posiljke CASCADE"))
+  dbSendQuery(conn, build_sql("DROP TABLE vmesno_nahajalisce CASCADE"))
+  dbSendQuery(conn, build_sql("DROP TABLE osebe CASCADE"))
+
   #CASCADE zato da zbrise tabelo tudi ce je odvisna od ene druge
   # Rezultat dobimo kot razpredelnico (data frame)
 }, finally = {

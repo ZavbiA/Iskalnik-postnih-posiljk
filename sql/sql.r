@@ -15,36 +15,36 @@ tryCatch({
     
     # Glavne tabele
     dbSendQuery(conn, build_sql("CREATE TABLE osebe (
-                                              uporabnisko_ime INTEGER PRIMARY KEY,
+                                              uporabnisko_ime text PRIMARY KEY,
                                               ime text NOT NULL,
                                               priimek text NOT NULL,
                                               email text NOT NULL,
                                               geslo text NOT NULL,
-                                              telefonska INTEGER NOT NULL)"))
+                                              telefonska text NOT NULL)"))
     
-    dbSendQuery(conn, build_sql("CREATE TABLE poste(
+    dbSendQuery(conn, build_sql("CREATE TABLE poste (
                                             postna_stevilka INTEGER PRIMARY KEY,
                                             naziv_poste text NOT NULL)"))
     
-    dbSendQuery(conn, build_sql("CREATE TABLE posiljke(
+    dbSendQuery(conn, build_sql("CREATE TABLE posiljke (
                                                id_posiljke INTEGER PRIMARY KEY,
                                                teza INTEGER NOT NULL,
                                                datum_oddaje DATE NOT NULL,
-                                              datum_prispe DATE NOT NULL,
-                                               naslovnik INTEGER REFERENCES osebe(uporabnisko_ime)),
-                                              posiljatelj INTEGER REFERENCES osebe(uporabnisko_ime)"))
+                                              datum_prispe DATE,
+                                              naslovnik text REFERENCES osebe(uporabnisko_ime),
+                                              posiljatelj text REFERENCES osebe(uporabnisko_ime))"))
     
     
     
-    dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce(
-                                                        id_posiljke INTEGER PRIMARY KEY
-                                                        vmesni_datum DATE NOT NULL
-                                                        vmesni_kraj INTEGER REFERENCES poste(postna_stevilka)"))
+    dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce (
+                                                        id_posiljke INTEGER PRIMARY KEY,
+                                                        vmesni_datum DATE NOT NULL,
+                                                        vmesni_kraj INTEGER REFERENCES poste(postna_stevilka))"))
     
     dbSendQuery(conn, build_sql("CREATE TABLE sporocilo (
                               id SERIAL PRIMARY KEY,
                               uporabnisko_ime INTEGER,
-                              besedilo TEXT,
+                              besedilo text,
                               cas TIMESTAMP )"))
     
     
