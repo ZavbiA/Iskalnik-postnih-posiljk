@@ -51,6 +51,7 @@ vmesno_nahajalisce <- posiljke
 vmesno_nahajalisce <- vmesno_nahajalisce[,-c(2,3,5,6,7)]
 #zbrišemo vrstice, kjer pišiljka nima vmesnega nahajališča
 vmesno_nahajalisce <- vmesno_nahajalisce[-c(1:1500),]
+names(vmesno_nahajalisce) <- c('ID','vmesni_datum','vmesna_posta')
 
 #Zdaj lahko izbrisemo vmesno postajo iz tabele posiljke.
 posiljke <- posiljke[,-c(4,8)]

@@ -20,7 +20,8 @@ tryCatch({
                                               priimek text NOT NULL,
                                               email text NOT NULL,
                                               geslo text NOT NULL,
-                                              telefonska text NOT NULL)"))
+                                              telefonska text NOT NULL,
+                                              prebivalisce text NOT NULL)"))
     
     dbSendQuery(conn, build_sql("CREATE TABLE poste (
                                             postna_stevilka INTEGER PRIMARY KEY,
@@ -30,16 +31,20 @@ tryCatch({
                                                id_posiljke INTEGER PRIMARY KEY,
                                                teza INTEGER NOT NULL,
                                                datum_oddaje DATE NOT NULL,
-                                              datum_prispe DATE,
                                               naslovnik text REFERENCES osebe(uporabnisko_ime),
                                               posiljatelj text REFERENCES osebe(uporabnisko_ime))"))
-    
     
     
     dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce (
                                                         id_posiljke INTEGER PRIMARY KEY,
                                                         vmesni_datum DATE NOT NULL,
-                                                        vmesni_kraj INTEGER REFERENCES poste(postna_stevilka))"))
+                                                        vmesna_posta INTEGER REFERENCES poste(postna_stevilka))"))
+    
+    dbSendQuery(conn, build_sql("CREATE TABLE koncno_nahajalisce (
+                                id_posiljke INTEGER PRIMARY KEY,
+                                datum_prispe DATE NOT NULL,
+                                posta_prispetja INTEGER REFERENCES poste(postna_stevilka))"))
+    
     
     dbSendQuery(conn, build_sql("CREATE TABLE sporocilo (
                               id SERIAL PRIMARY KEY,
