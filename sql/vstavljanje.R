@@ -32,6 +32,8 @@ vstavljanje.osebe <- function(){
 
     # Rezultat dobimo kot razpredelnico (data frame)
   }, finally = {
+    conn <- dbConnect(drv, dbname = db, host = host,
+                      user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj preveč odprtih povezav ne smemo imeti
     dbDisconnect(conn)
@@ -76,6 +78,8 @@ vstavljanje.posiljke <- function(){
     # CONVERT(varchar, getdate(), 23)
     # # Rezultat dobimo kot razpredelnico (data frame)
   }, finally = {
+    conn <- dbConnect(drv, dbname = db, host = host,
+                      user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj preveč odprtih povezav ne smemo imeti
     dbDisconnect(conn)
@@ -108,6 +112,8 @@ vstavljanje.poste <- function(){
     }
     # Rezultat dobimo kot razpredelnico (data frame)
   }, finally = {
+    conn <- dbConnect(drv, dbname = db, host = host,
+                      user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj preveč odprtih povezav ne smemo imeti
     dbDisconnect(conn)
@@ -138,6 +144,8 @@ vstavljanje.vmesno_nahajalisce <- function(){
     }
     # Rezultat dobimo kot razpredelnico (data frame)
   }, finally = {
+    conn <- dbConnect(drv, dbname = db, host = host,
+                      user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj preveč odprtih povezav ne smemo imeti
     dbDisconnect(conn)
@@ -168,6 +176,8 @@ vstavljanje.koncno_nahajalisce <- function(){
     }
     # Rezultat dobimo kot razpredelnico (data frame)
   }, finally = {
+    conn <- dbConnect(drv, dbname = db, host = host,
+                      user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj preveč odprtih povezav ne smemo imeti
     dbDisconnect(conn)

@@ -7,7 +7,7 @@ source("auth.R", encoding="UTF-8")
 source("uvoz.R", encoding="UTF-8")
 
 # Povezemo se z gonilnikom za PostgreSQL
-drv <- dbDriver("PostgreSQL") 
+drv <- dbDriver("PostgreSQL")
 
 tryCatch({
     # Vzpostavimo povezavo
@@ -55,6 +55,8 @@ tryCatch({
     
 },
   finally = {
+    conn <- dbConnect(drv, dbname = db, host = host,
+                      user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj prevec odprtih povezav ne smemo imeti
     dbDisconnect(conn) #PREKINEMO POVEZAVO
@@ -89,6 +91,8 @@ pravice <- function(){
     
     
   }, finally = {
+    conn <- dbConnect(drv, dbname = db, host = host,
+                      user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
     # saj prevec odprtih povezav ne smemo imeti
     dbDisconnect(conn) #PREKINEMO POVEZAVO

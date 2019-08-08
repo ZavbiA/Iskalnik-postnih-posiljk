@@ -28,6 +28,8 @@ tryCatch({
   #CASCADE zato da zbrise tabelo tudi ce je odvisna od ene druge
   # Rezultat dobimo kot razpredelnico (data frame)
 }, finally = {
+  conn <- dbConnect(drv, dbname = db, host = host,
+                    user = user, password = password)
   # Na koncu nujno prekinemo povezavo z bazo,
   # saj preveč odprtih povezav ne smemo imeti
   dbDisconnect(conn)
