@@ -21,36 +21,36 @@ tryCatch({
                                               email text NOT NULL,
                                               geslo text NOT NULL,
                                               telefonska text NOT NULL,
-                                              prebivalisce text NOT NULL)"))
+                                              prebivalisce text NOT NULL)", con = conn))
     
     dbSendQuery(conn, build_sql("CREATE TABLE poste (
                                             postna_stevilka INTEGER PRIMARY KEY,
-                                            naziv_poste text NOT NULL)"))
+                                            naziv_poste text NOT NULL)", con = conn))
     
     dbSendQuery(conn, build_sql("CREATE TABLE posiljke (
-                                               id_posiljke INTEGER PRIMARY KEY,
+                                               ID INTEGER PRIMARY KEY,
                                                teza INTEGER NOT NULL,
                                                datum_oddaje DATE NOT NULL,
-                                              naslovnik text REFERENCES osebe(uporabnisko_ime),
-                                              posiljatelj text REFERENCES osebe(uporabnisko_ime))"))
+                                              posiljatelj text REFERENCES osebe(uporabnisko_ime),
+                                              naslovnik text REFERENCES osebe(uporabnisko_ime))", con = conn))
     
     
     dbSendQuery(conn, build_sql("CREATE TABLE vmesno_nahajalisce (
-                                                        id_posiljke INTEGER PRIMARY KEY,
+                                                        ID INTEGER PRIMARY KEY,
                                                         vmesni_datum DATE NOT NULL,
-                                                        vmesna_posta INTEGER REFERENCES poste(postna_stevilka))"))
+                                                        vmesna_posta INTEGER REFERENCES poste(postna_stevilka))", con = conn))
     
     dbSendQuery(conn, build_sql("CREATE TABLE koncno_nahajalisce (
-                                id_posiljke INTEGER PRIMARY KEY,
+                                ID INTEGER PRIMARY KEY,
                                 datum_prispe DATE NOT NULL,
-                                posta_prispetja INTEGER REFERENCES poste(postna_stevilka))"))
+                                posta_prispetja INTEGER REFERENCES poste(postna_stevilka))", con = conn))
     
     
     dbSendQuery(conn, build_sql("CREATE TABLE sporocilo (
                               id SERIAL PRIMARY KEY,
                               uporabnisko_ime text REFERENCES osebe(uporabnisko_ime),
                               besedilo text,
-                              cas TIMESTAMP )"))
+                              cas TIMESTAMP )", con = conn))
     
     
 },
@@ -69,22 +69,22 @@ pravice <- function(){
     conn <- dbConnect(drv, dbname = db, host = host,
                       user = user, password = password)
     
-    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO anjazk WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO ajdas WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO anjazk WITH GRANT OPTION", con = conn))
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO ajdas WITH GRANT OPTION", con = conn))
     
-    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO anjazk WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO ajdas WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO anjazk WITH GRANT OPTION", con= conn))
+    dbSendQuery(conn, build_sql("GRANT ALL ON SCHEMA public TO ajdas WITH GRANT OPTION", con= conn))
     
-    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO anjazk WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO ajdas WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO spelao WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO anjazk WITH GRANT OPTION",con= conn))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO ajdas WITH GRANT OPTION",con= conn))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL TABLES IN SCHEMA public TO spelao WITH GRANT OPTION",con= conn))
     
-    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anjazk WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO ajdas WITH GRANT OPTION"))
-    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO spelao WITH GRANT OPTION"))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anjazk WITH GRANT OPTION",con= conn))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO ajdas WITH GRANT OPTION",con= conn))
+    dbSendQuery(conn, build_sql("GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO spelao WITH GRANT OPTION",con= conn))
     
-    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO javnost"))
-    dbSendQuery(conn, build_sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost"))
+    dbSendQuery(conn, build_sql("GRANT CONNECT ON DATABASE sem2019_spelao TO javnost",con= conn))
+    dbSendQuery(conn, build_sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost",con= conn))
     
     
     
