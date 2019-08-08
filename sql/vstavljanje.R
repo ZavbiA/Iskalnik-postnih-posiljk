@@ -8,7 +8,6 @@ source("uvoz.r", encoding="UTF-8")
 
 # Povezemo se z gonilnikom za PostgreSQL
 drv <- dbDriver("PostgreSQL")
-
 vstavljanje.osebe <- function(){
 
   # Uporabimo tryCatch,
@@ -59,15 +58,15 @@ vstavljanje.posiljke <- function(){
 
     for (i in 1:nrow(posiljke)){
       v <- posiljke[i, ]
-      dbSendQuery(conn, build_sql("INSERT INTO posiljke (id_posiljke,teza, datum_oddaje, datum_prispe, naslovnik, posiljatelj)
+      dbSendQuery(conn, build_sql("INSERT INTO posiljke (ID,teza, datum_oddaje, posiljatelj, naslovnik)
                                   VALUES ( ", v[["ID"]], ", ",
                                   v[["teza"]], ", ",
                                   as.Date(v[["datum_oddaje"]], format="%m/%d/%Y"),", ",
                                  # v[["datum_oddaje"]],", ",
-                                  as.Date( v[["datum_prispe"]],format="%m/%d/%Y"), ", ",
-                                  # v[["datum_prispe"]], ", ",
-                                  v[["naslovnik"]], ", ",
-                                  v[["posiljatelj"]], ")"))
+                                  # as.Date( v[["datum_prispe"]],format="%m/%d/%Y"), ", ",
+                                  # v[["datum_oddaje"]], ", ",
+                                  v[["posiljatelj"]], ", ",
+                                  v[["naslovnik"]], ")"))
 
     }
    #  YYYY-MM-DD
@@ -91,9 +90,6 @@ posiljke_ <- vstavljanje.posiljke()
 
 vstavljanje.poste <- function(){
 
-  #trgovine <- read.csv("trgovine.csv", sep=";")
-  # Uporabimo tryCatch,
-  # da prisilimo prekinitev povezave v primeru napake
   tryCatch({
     # Vzpostavimo povezavo
     conn <- dbConnect(drv, dbname = db, host = host,
@@ -137,8 +133,8 @@ vstavljanje.vmesno_nahajalisce <- function(){
 
     for (i in 1:nrow(vmesno_nahajalisce)){
       v <- vmesno_nahajalisce[i, ]
-      dbSendQuery(conn, build_sql("INSERT INTO vmesno_nahajalisce (id_posiljke, vmesni_datum, vmesni_kraj)
-                                    VALUES (", v[["ID"]], ", ",as.Date(v[["datum_prispe"]], format="%m/%d/%Y"), ", ",v[["vmesni_kraj"]], ")"))
+      dbSendQuery(conn, build_sql("INSERT INTO vmesno_nahajalisce (id_posiljke, vmesni_datum, vmesna_posta)
+                                    VALUES (", v[["ID"]], ", ",as.Date(v[["vmesni_datum"]], format="%m/%d/%Y"), ", ",v[["vmesna_posta"]], ")"))
 
     }
     # Rezultat dobimo kot razpredelnico (data frame)

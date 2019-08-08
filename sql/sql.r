@@ -48,7 +48,7 @@ tryCatch({
     
     dbSendQuery(conn, build_sql("CREATE TABLE sporocilo (
                               id SERIAL PRIMARY KEY,
-                              uporabnisko_ime INTEGER,
+                              uporabnisko_ime text REFERENCES osebe(uporabnisko_ime),
                               besedilo text,
                               cas TIMESTAMP )"))
     
