@@ -63,3 +63,4 @@ koncno_nahajalisce<-koncno_nahajalisce[,-c(3,4)]
 
 #zbrisemo datum prispe iz tabele posiljke, ker je v drugi tabeli koncno nahajalisce
 posiljke <- posiljke[,-c(4)]
+
