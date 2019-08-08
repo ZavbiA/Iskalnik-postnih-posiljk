@@ -154,7 +154,7 @@ vstavljanje.vmesno_nahajalisce <- function(){
     # ali pa po tem, ko se ta konča z napako
   })
 }
-vmesno_nahajalisce_ <- vstavljanje.vmesno_nahajalisce
+vmesno_nahajalisce_ <- vstavljanje.vmesno_nahajalisce()
 
 vstavljanje.koncno_nahajalisce <- function(){
 
@@ -186,4 +186,4 @@ vstavljanje.koncno_nahajalisce <- function(){
     # ali pa po tem, ko se ta konča z napako
   })
   }
-koncno_nahajalisce_ <- vstavljanje.koncno_nahajalisce
+koncno_nahajalisce_ <- vstavljanje.koncno_nahajalisce()
