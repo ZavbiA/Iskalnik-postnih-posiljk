@@ -163,9 +163,7 @@ vstavljanje.koncno_nahajalisce <- function(){
     for (i in 1:nrow(koncno_nahajalisce)){
       v <- koncno_nahajalisce[i, ]
       dbSendQuery(conn, build_sql("INSERT INTO koncno_nahajalisce (ID, datum_prispe, posta_prispetja)
-                                  VALUES (", v[["ID"]], ",
-                                  ",as.Date(v[["datum_prispe"]], format="%m/%d/%Y"), ",
-                                  ",v[["posta_prispetja"]], ")", con = conn))
+                                  VALUES (", v[["ID"]], ",",as.Date(v[["datum_prispe"]], format="%m/%d/%Y"), ", ",v[["posta_prispetja"]], ")", con = conn))
 
     }
     # Rezultat dobimo kot razpredelnico (data frame)
