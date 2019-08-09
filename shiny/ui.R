@@ -26,7 +26,8 @@ ui <- fluidPage(
     sidebarPanel(
       
       menuItem("Pomoč uporabnikom",tabName = "pomoc"),
-      menuItem("Navodila",tabName = "navodila")
+      menuItem("Navodila",tabName = "navodila"),
+      menuItem("Poštna statistika",tabName = "statistika")
     ),
     
     mainPanel(

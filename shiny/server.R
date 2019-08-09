@@ -5,7 +5,7 @@ library(hash)
 # source("../lib/libraries.R")
 #library(dbplyr)
 
-#ČE TI KDAJ NAPIŠE  DA SI PRESEGEL MAX POVEZAV, ZAŽENI TO:
+#ČE TI KDAJ NAPISE  DA SI PRESEGEL MAX POVEZAV, ZAZENI TO:
 #RPostgreSQL::dbDisconnect(RPostgreSQL::dbListConnections(RPostgreSQL::PostgreSQL())[[1]]) 
 
 source("auth_public.R")
@@ -21,7 +21,7 @@ shinyServer(function(input, output,session) {
   conn <- dbConnect(drv, dbname = db, host = host,
                        user = user, password = password)
   userID <- reactiveVal()
-  dbGetQuery(conn, "SET CLIENT_ENCODING TO 'utf8'; SET NAMES 'utf8'") #poskusim resiti rezave s sumniki
+  dbGetQuery(conn, "SET CLIENT_ENCODING TO 'utf8'; SET NAMES 'utf8'") #poskusim resiti tezave s sumniki
   
   cancel.onSessionEnded <- session$onSessionEnded(function() {
     dbDisconnect(conn) #ko zapremo shiny naj se povezava do baze zapre
