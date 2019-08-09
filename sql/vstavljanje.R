@@ -23,11 +23,12 @@ vstavljanje.osebe <- function(){
 
     for (i in 1:nrow(osebe)) {
       v <- osebe[i,]
-      dbSendQuery(conn, build_sql("INSERT INTO osebe (uporabnisko_ime, ime, priimek, email, geslo, telefonska)
+      dbSendQuery(conn, build_sql("INSERT INTO osebe (uporabnisko_ime, ime, priimek, email, geslo, telefonska,prebivalisce)
                                   VALUES (", v[["uporabnisko_ime"]], ", ",
                                   v[["ime"]], ", ", v[["priimek"]],", ",
                                   v[["email"]], ", ", v[["geslo"]], ", ",
-                                  v[["telefonska"]]," )",con = conn))
+                                  v[["telefonska"]], ", ",
+                                  v[["prebivalisce"]]," )",con = conn))
      }
 
     # Rezultat dobimo kot razpredelnico (data frame)

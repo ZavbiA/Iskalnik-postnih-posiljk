@@ -20,8 +20,8 @@ tryCatch({
                                               priimek text NOT NULL,
                                               email text NOT NULL,
                                               geslo text NOT NULL,
-                                              telefonska text NOT NULL
-                                             )", con = conn))
+                                              telefonska text NOT NULL,
+                                              prebivalisce text NOT NULL)", con = conn))
     
     dbSendQuery(conn, build_sql("CREATE TABLE poste (
                                             postna_stevilka INTEGER PRIMARY KEY,
