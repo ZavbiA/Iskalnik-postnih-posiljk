@@ -139,31 +139,51 @@ observeEvent(input$signin_btn,
   
 ## oddane posiljke
  oddane <- reactive({
-    oddane_posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\" FROM posiljke WHERE posiljatelj =", userID() , con = conn))
-    oddane_posiljke_data
-    oddane_posiljke_data$`Datum prispetja` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum prispetja`))
-    oddane_posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum oddaje`))
+    oddane_posiljke_data <- dbGetQuery(conn, build_sql("SELECT  posiljke.ID AS \"Stevilka posiljke\", posiljke.datum_oddaje AS \"Datum oddaje\",
+                                                      vmesno_nahajalisce.vmesni_datum  AS \"Datum prihoda na vmesno postajo\",
+                                                      vmesno_nahajalisce.vmesna_posta  AS \"Vmesna postaja\", 
+                                                      koncno_nahajalisce.datum_prispe  AS \"Datum prispele posiljke na vaso destinacijo\", 
+                                                      koncno_nahajalisce.posta_prispetja  AS \"Posta kjer se posiljka nahaja\"
+                                                      FROM posiljke
+                                                      FULL JOIN vmesno_nahajalisce ON posiljke.ID = vmesno_nahajalisce.ID
+                                                      FULL JOIN koncno_nahajalisce ON posiljke.ID = koncno_nahajalisce.ID
+                                                      WHERE posiljatelj =", userID(),con = conn))
+    # oddane_posiljke_data$`Datum prihoda na vmesno postajo` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum prihoda na vmesno postajo`))
+    # oddane_posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum oddaje`))
+    # oddane_posiljke_data$`Datum prispele posiljke na vaso destinacijo` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum prispele posiljke na vašo destinacijo`))
+    # 
     
   })
  output$oddane.posiljke <- DT :: renderDataTable({
    tabela = oddane()
    validate(need(nrow(tabela)>0, "ni podatkov"))
-   DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString") %>% DT::formatStyle(columns = c('Datum oddaje', 'Datum prispetja'), color = 'black')
+   DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prihoda na vmesno postajo', 'Datum prispele posiljke na vaso destinacijo'), method = "toLocaleDateString") %>% DT::formatStyle(columns = c('Stevilka posiljke','Datum oddaje','Datum prihoda na vmesno postajo', 'Vmesna postaja', 'Datum prispele posiljke na vaso destinacijo','Posta kjer se posiljka nahaja'), color = 'black')
+   
+   
    })
 
   
 ## prejete posiljke 
 prejete<- reactive({
-    prejete.posiljke_data <- dbGetQuery(conn, build_sql("SELECT datum_oddaje AS \"Datum oddaje\", datum_prispe AS \"Datum prispetja\"  FROM posiljke WHERE naslovnik =", userID(),con = conn))
-    prejete.posiljke_data$`Datum prispetja` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum prispetja`))
-    prejete.posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum oddaje`))
-    
+    prejete.posiljke_data <- dbGetQuery(conn, build_sql("SELECT  posiljke.ID AS \"Stevilka posiljke\", posiljke.datum_oddaje AS \"Datum oddaje\",
+                                                      vmesno_nahajalisce.vmesni_datum  AS \"Datum prihoda na vmesno postajo\",
+                                                      vmesno_nahajalisce.vmesna_posta  AS \"Vmesna postaja\", 
+                                                      koncno_nahajalisce.datum_prispe  AS \"Datum prispele posiljke na vaso destinacijo\", 
+                                                      koncno_nahajalisce.posta_prispetja  AS \"Posta kjer se posiljka nahaja\"
+                                                      FROM posiljke
+                                                      FULL JOIN vmesno_nahajalisce ON posiljke.ID = vmesno_nahajalisce.ID
+                                                      FULL JOIN koncno_nahajalisce ON posiljke.ID = koncno_nahajalisce.ID
+                                                      WHERE naslovnik =", userID(),con = conn))
+    # prejete.posiljke_data$`Datum prihoda na vmesno postajo` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum prihoda na vmesno postajo`))
+    # prejete.posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum oddaje`))
+    # prejete.posiljke_data$`Datum prispele posiljke na vaso destinacijo` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum prispele posiljke na vaso destinacijo`))
+    # 
 
     })
   output$prejete.posiljke <- DT :: renderDataTable({
     tabela = prejete()
     validate(need(nrow(tabela)>0, "ni podatkov"))
-    DT::datatable(tabela)%>%DT::formatDate(c('Datum oddaje', 'Datum prispetja'), method = "toLocaleDateString") %>% DT::formatStyle(columns = c('Datum oddaje', 'Datum prispetja'), color = 'black')
+    DT::datatable(tabela)%>%DT::formatDate(c( 'Datum oddaje', 'Datum prihoda na vmesno postajo', 'Datum prispele posiljke na vaso destinacijo'), method = "toLocaleDateString") %>% DT::formatStyle(columns = c('Stevilka posiljke', 'Datum oddaje','Datum prihoda na vmesno postajo', 'Vmesna postaja', 'Datum prispele posiljke na vaso destinacijo','Posta kjer se posiljka nahaja'), color = 'black')
     
  
   

@@ -1,3 +1,4 @@
+source("libraries.r")
 #Najprej uvozimo seznam post.
 poste <- read.csv2(file = "seznam_1.csv")
 #odstranimo nekaj ponavljajocih se post (Lj, Mb, Kp), da lahko uporabimo vektorske funkcije
@@ -65,3 +66,6 @@ koncno_nahajalisce<-koncno_nahajalisce[,-c(3,4)]
 #zbrisemo datum prispe iz tabele posiljke, ker je v drugi tabeli koncno nahajalisce
 posiljke <- posiljke[,-c(4)]
 
+
+# 129912621.0
+# 0122014e362da01e3c50ce67747ec907
