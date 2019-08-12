@@ -82,11 +82,11 @@ vstavljanje.posiljke <- function(){
     conn <- dbConnect(drv, dbname = db, host = host,
                       user = user, password = password)
     # Na koncu nujno prekinemo povezavo z bazo,
-    # saj preveč odprtih povezav ne smemo imeti
+    # saj prevec odprtih povezav ne smemo imeti
     dbDisconnect(conn)
     # Koda v finally bloku se izvede v vsakem primeru
     # - bodisi ob koncu izvajanja try bloka,
-    # ali pa po tem, ko se ta konča z napako
+    # ali pa po tem, ko se ta konca z napako
   })
 }
 posiljke_ <- vstavljanje.posiljke()
@@ -152,7 +152,7 @@ vstavljanje.vmesno_nahajalisce <- function(){
     dbDisconnect(conn)
     # Koda v finally bloku se izvede v vsakem primeru
     # - bodisi ob koncu izvajanja try bloka,
-    # ali pa po tem, ko se ta konča z napako
+    # ali pa po tem, ko se ta konca z napako
   })
 }
 vmesno_nahajalisce_ <- vstavljanje.vmesno_nahajalisce()

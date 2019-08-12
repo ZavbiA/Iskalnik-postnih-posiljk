@@ -13,13 +13,14 @@ osebe$uporabnisko_ime <- gsub("-", "", osebe$uporabnisko_ime) %>% parse_number()
 # osebe$uporabnisko_ime <- toString(osebe$uporabnisko_ime)
 osebe$telefonska <- gsub("-", "", osebe$telefonska) %>% parse_number()
 
+osebe$geslo <- as.character(osebe$geslo)
 #Stolpec geslo spremenimo, da to niso vec prava gesla, ampak hash.
-osebe$geslo <- sapply(osebe$geslo, digest, algo="md5")
+for (i in (1:nrow(osebe))){
+  osebe[i,5] <- digest(osebe[i,5], algo="md5")}
 
 #Dodamo in premesamo stolpec prebivalisce.
 osebe$prebivalisce <- sample(poste$naziv_poste)
 #Ta vrstica nekaj naredi, da to ni vec tabela?
-is.table(osebe)
 
 #Zgeneriramo se tabelo posiljke, 10 000 podatkov.
 posiljke <- read.csv('posiljkee.csv')

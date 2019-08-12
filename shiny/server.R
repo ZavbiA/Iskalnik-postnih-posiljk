@@ -15,7 +15,7 @@ original.locale <- Sys.getlocale(category="LC_CTYPE")       ## "English_Slovenia
 Sys.setlocale("LC_CTYPE", "Slovenian_Slovenia.1250")     #to popravi sumnike
 
 
-shinyServer(function(input, output,session) {
+shinyServer(function(input, output, session) {
   # Vzpostavimo povezavo
   drv <- dbDriver("PostgreSQL") 
   conn <- dbConnect(drv, dbname = db, host = host,
@@ -41,11 +41,11 @@ observeEvent(input$signin_btn,
                {signInReturn <- sign.in.user(input$userName, input$password)
                if(signInReturn[[1]]==1){
                  userID(signInReturn[[2]])
-
+                 
                  output$signUpBOOL <- eventReactive(input$signin_btn, 2)
                  # loggedIn(TRUE)
                  # userID <- input$userName
-                 # upam da se tu userID nastavi na pravo vrednosst 
+                 # upam da se tu userID nastavi na pravo vrednost 
                }else if(signInReturn[[1]]==0){
                  showModal(modalDialog(
                    title = "Error during sign in",
@@ -91,7 +91,11 @@ observeEvent(input$signin_btn,
       geslo <- pass
       hashGesla <- (userTable %>% filter(uporabnisko_ime == uporabnik) %>% collect() %>% pull(geslo))[[1]]
       print(hashGesla)
-      if(pass == hashGesla){
+      pass1 <- digest(pass, algo="md5")
+      print(pass1)
+      #uporabnik vpise svoje originalno geslo, sistem pa ga prevede v hash in preveri,
+      #ce se ujema s tabelo
+      if(pass1 == hashGesla){
         obstoj <- 1
         uporabnikID <- (userTable %>% filter(uporabnisko_ime==uporabnik) %>%
                           collect() %>% pull(uporabnisko_ime))[[1]]
