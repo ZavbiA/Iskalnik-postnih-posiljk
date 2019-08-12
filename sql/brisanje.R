@@ -18,10 +18,10 @@ tryCatch({
   
   # Poizvedbo zgradimo s funkcijo build_sql
   # in izvedemo s funkcijo dbGetQuery
-  dbSendQuery(conn, build_sql("DROP TABLE sporocilo CASCADE", con = conn))
-  dbSendQuery(conn, build_sql("DROP TABLE poste CASCADE", con = conn))
+#  dbSendQuery(conn, build_sql("DROP TABLE sporocilo CASCADE", con = conn))
+ # dbSendQuery(conn, build_sql("DROP TABLE poste CASCADE", con = conn))
   dbSendQuery(conn, build_sql("DROP TABLE posiljke CASCADE", con = conn))
-  dbSendQuery(conn, build_sql("DROP TABLE vmesno_nahajalisce CASCADE", con = conn))
+#  dbSendQuery(conn, build_sql("DROP TABLE vmesno_nahajalisce CASCADE", con = conn))
   dbSendQuery(conn, build_sql("DROP TABLE osebe CASCADE", con = conn))
   dbSendQuery(conn, build_sql("DROP TABLE koncno_nahajalisce CASCADE", con = conn))
 
