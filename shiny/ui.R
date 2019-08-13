@@ -1,6 +1,6 @@
 
 source("server.R")
-source("../lib/libraries.r")
+source("../lib/libraries.R")
 
 vpisniPanel <- tabPanel("SignIn", value="signIn",
                         fluidPage(

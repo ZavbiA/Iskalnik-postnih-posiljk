@@ -2,13 +2,15 @@ library(shiny)
 library(dplyr)
 library(RPostgreSQL)
 library(hash)
+library(digest)
 # source("../lib/libraries.R")
 #library(dbplyr)
 
 #ČE TI KDAJ NAPISE  DA SI PRESEGEL MAX POVEZAV, ZAZENI TO:
 #RPostgreSQL::dbDisconnect(RPostgreSQL::dbListConnections(RPostgreSQL::PostgreSQL())[[1]]) 
 
-#source("auth.R") #skopiraj svojo auth.R datoteko v mapo shiny
+source("auth.R") #skopiraj svojo auth.R datoteko v mapo shiny
+#source("auth_public.R")
 
 #Za probleme s sumniki uporabi:
 original.locale <- Sys.getlocale(category="LC_CTYPE")       ## "English_Slovenia.1252" pri meni

@@ -1,4 +1,5 @@
 source("libraries.r")
+
 #Najprej uvozimo seznam post.
 poste <- read.csv2(file = "seznam_1.csv")
 #odstranimo nekaj ponavljajocih se post (Lj, Mb, Kp), da lahko uporabimo vektorske funkcije
