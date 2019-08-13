@@ -33,8 +33,11 @@ shinyServer(function(input, output, session) {
   observeEvent(input$signup_btn, output$signUpBOOL <- eventReactive(input$signup_btn, 1))
   
   
-  
-  
+ uporabnik <- reactive({
+    user <- userID()
+    validate(need(!is.null(user), "Potrebna je prijava!"))
+    user
+  })
   
 #-------------------------------------------------------------------------------------------------
      
@@ -149,7 +152,7 @@ observeEvent(input$signin_btn,
                                                       FROM posiljke
                                                       FULL JOIN vmesno_nahajalisce ON posiljke.ID = vmesno_nahajalisce.ID
                                                       FULL JOIN koncno_nahajalisce ON posiljke.ID = koncno_nahajalisce.ID
-                                                      WHERE posiljatelj =", userID(),con = conn))
+                                                      WHERE posiljatelj =", uporabnik(),con = conn))
     # oddane_posiljke_data$`Datum prihoda na vmesno postajo` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum prihoda na vmesno postajo`))
     # oddane_posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum oddaje`))
     # oddane_posiljke_data$`Datum prispele posiljke na vaso destinacijo` <- as.Date(as.POSIXct(oddane_posiljke_data$`Datum prispele posiljke na vašo destinacijo`))
@@ -175,7 +178,7 @@ prejete<- reactive({
                                                       FROM posiljke
                                                       FULL JOIN vmesno_nahajalisce ON posiljke.ID = vmesno_nahajalisce.ID
                                                       FULL JOIN koncno_nahajalisce ON posiljke.ID = koncno_nahajalisce.ID
-                                                      WHERE naslovnik =", userID(),con = conn))
+                                                      WHERE naslovnik =", uporabnik(),con = conn))
     # prejete.posiljke_data$`Datum prihoda na vmesno postajo` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum prihoda na vmesno postajo`))
     # prejete.posiljke_data$`Datum oddaje` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum oddaje`))
     # prejete.posiljke_data$`Datum prispele posiljke na vaso destinacijo` <- as.Date(as.POSIXct(prejete.posiljke_data$`Datum prispele posiljke na vaso destinacijo`))
@@ -196,10 +199,10 @@ prejete<- reactive({
   observeEvent(input$poslji,{
     ideja <- renderText({input$sporocilo})
     sql2 <- build_sql("INSERT INTO sporocilo (uporabnisko_ime,besedilo,cas)
-                      VALUES(",userID,",", input$sporocilo,",", ",NOW())", con = conn)  
+                      VALUES(",uporabnik(),",", input$sporocilo,",", "NOW())", con = conn)  
     data2 <- dbGetQuery(conn, sql2)
     data2
-    shinyjs::reset("sporocilo") # reset po vpisu komentarja
+    shinyjs::reset("sporocilo_") 
   })
 
     
@@ -207,14 +210,16 @@ prejete<- reactive({
 najdi.komentar <- reactive({
     input$poslji
     sql_komentar <- build_sql("SELECT uporabnisko_ime AS \"Uporabnik\", besedilo AS \"Sporocilo\", cas AS \"Cas\" FROM sporocilo
-                            WHERE uporabnisko_ime =",userID, con = conn)
+                            WHERE uporabnisko_ime =",uporabnik(), con = conn)
     komentarji <- dbGetQuery(conn, sql_komentar)
-    validate(need(nrow(komentarji) > 0, "Ni komentarjev."))
+    validate(need(nrow(komentarji) > 0, "Pustite sporočilo"))
+    # validate(need( nrow(komentarji) == 0, "Spodaj so vaša že poslana sporočila" ))
+    
     komentarji
   })
     
-output$komentiranje<- DT::renderDataTable( DT::datatable(najdi.komentar()) %>% DT::formatDate("Cas", method="toLocaleString"))
-  
+# output$sporocilo_<- DT::renderDataTable( DT::datatable(najdi.komentar()) %>%DT::formatDate("Cas", method="toLocaleString"))%>%DT::formatStyle(columns = c('Uporabnik', 'Sporocilo','Cas'), color = 'black')
+output$sporocilo_<- DT::renderDataTable( DT::datatable(najdi.komentar()) %>% DT::formatDate("Cas", method="toLocaleString") %>% DT::formatStyle(columns = c('Uporabnik', 'Sporocilo','Cas'), color = 'black') )
   
 
 })
