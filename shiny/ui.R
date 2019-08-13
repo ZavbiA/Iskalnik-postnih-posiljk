@@ -24,12 +24,12 @@ ui <- fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      
-      menuItem("Pomoč uporabnikom",tabName = "pomoc"),
-      menuItem("Navodila",tabName = "navodila"),
-      menuItem("Poštna statistika",tabName = "statistika")
+
+      menuItem("Pomoč uporabnikom",tabName = "pomoc", icon = icon("sporociloo")) ,
+      menuItem("Navodila",tabName = "navodila", icon = icon("navodila")),
+      menuItem("Poštna statistika",tabName = "statistika", icon = icon("stat"))
     ),
-    
+
     mainPanel(
      
       conditionalPanel(condition = "output.signUpBOOL!='1' && output.signUpBOOL!='2'",#&& false", 
@@ -42,15 +42,17 @@ ui <- fluidPage(
                          tabPanel("Pomoč uporabnikom", 
                                   textInput("sporocilo", "Poslji sporocilo", placeholder = "Sporocilo"),
                                   actionButton(inputId ="poslji", label = "Pošlji"),
-                                  verbatimTextOutput("value")),
-                                  DT::dataTableOutput("komentiranje")
+                                  DT::dataTableOutput("sporocilo_")
+                                  )
+                                  # verbatimTextOutput("value")),
+                                  
+                                  # DT::dataTableOutput("sporocilo_")
                          )
-                       )
-                         
                        
-      #                  # ,
-      #                  # iskalnikPosiljk
-      #                  
+                       )
+      # tabPanel(tabName = "pomoc", h2("Pusti sporoči") )
+                         
+               
                        
                        
       )
@@ -58,92 +60,9 @@ ui <- fluidPage(
   )
  
 
+
   
-  
-  
-#   dashboardPage(
-#     dashboardHeader(title="Pošta FMF"),
-#     dashboardSidebar(
-#       menuItem("Pomoč uporabnikom",tabName = "pomoc"),
-#       menuItem("Navodila",tabName = "navodila")
-#       ),
-#     dashboardBody(
-#     conditionalPanel(condition = "output.signUpBOOL!='1' && output.signUpBOOL!='2'",#&& false", 
-#                      vpisniPanel),
-#     conditionalPanel(condition = "output.signUpBOOL=='2'",
-#                     dashboardPage(
-#                     dashboardHeader(title =  "Pregled vasih posiljk")),
-#                     dashboardSidebar(
-#                       menuItem("Pomoč uporabnikom",tabName = "pomoc"),
-#                       menuItem("Navodila",tabName = "navodila")
-#                       
-#                     ),
-#                     dashboardBody(iskalnikPosiljk)
-# 
-#     
-#       
-#     )
-# 
-#     )
-# )
-# )
-#   
-# 
-# 
-# 
-# 
-# 
 
-
-
-
-
- 
-
-# body<-mainPanel(
-#   tabItems(
-#     tabItem(tabName = "Sledenje posiljke",
-#             fluidRow(sidebarPanel(
-#               uiOutput("")
-#             )))
-#     ,
-#     tabItem(tabName = "Pomoc uporabnikom")
-#            
-# )
-# )
-# 
-#   
-# fluidPage(useShinyjs(),
-#           conditionalPanel(condition = "output.signInBOOL!='0' && output.signInBOOL!='-10'",#&& false", 
-#                            vpisniPanel),       # UI panel za vpis
-#           conditionalPanel(condition = "output.signUpBOOL=='1'",
-#                            # Panel, ko je bila uspesna registracija
-#                            titlePnael("Sledenje pošiljke"),
-#                            sidebarLayout(
-#                              sidebarPanel(
-#                                actionButton("pomoc", "Pomoc Uporabnikom"),
-#                                width = 4
-#                                
-#                              )),
-#                            mainPanel()
-#                            
-#                            ),
-#           theme="bootstrap.css"
-# )
-# 
-#   
-
-  # mainPanel(
-  #   tabsetPanel(
-  #     tabPanel("Iskanje po postah",
-  # 
-  #            sidebarPanel(
-  #               uiOutput("izborPoste")
-  #              ),
-  #             mainPanel(tableOutput("posiljke")) #iz kere tabele vn pobira
-  #     )
-  # )
-  # )
 
 
 
