@@ -15,6 +15,9 @@ osebe$uporabnisko_ime <- gsub("-", "", osebe$uporabnisko_ime) %>% parse_number()
 # osebe$uporabnisko_ime <- toString(osebe$uporabnisko_ime)
 osebe$telefonska <- gsub("-", "", osebe$telefonska) %>% parse_number()
 
+#129912621
+#ryGI1jZtKq
+
 osebe$geslo <- as.character(osebe$geslo)
 #Stolpec geslo spremenimo, da to niso vec prava gesla, ampak hash.
 for (i in (1:nrow(osebe))){
