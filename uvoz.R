@@ -19,6 +19,9 @@ osebe$telefonska <- gsub("-", "", osebe$telefonska) %>% parse_number()
 #ryGI1jZtKq
 
 osebe$geslo <- as.character(osebe$geslo)
+#Prvemu uporabniku spremenimo uporabnisko ime in geslo, da se bomo lazje vpisovali
+osebe$uporabnisko_ime[1] <- "test"
+osebe$geslo[1] <- "test"
 #Stolpec geslo spremenimo, da to niso vec prava gesla, ampak hash.
 for (i in (1:nrow(osebe))){
   osebe[i,5] <- digest(osebe[i,5], algo="md5")}
