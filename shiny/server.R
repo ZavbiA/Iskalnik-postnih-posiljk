@@ -9,7 +9,7 @@ library(digest)
 #ČE TI KDAJ NAPISE  DA SI PRESEGEL MAX POVEZAV, ZAZENI TO:
 #RPostgreSQL::dbDisconnect(RPostgreSQL::dbListConnections(RPostgreSQL::PostgreSQL())[[1]]) 
 
-source("auth_public.R")
+source("auth.R") #Skopiraj svoj osebni auth.R v mapo shiny
 
 #Za probleme s sumniki uporabi:
 original.locale <- Sys.getlocale(category="LC_CTYPE")       ## "English_Slovenia.1252" pri meni
@@ -94,9 +94,9 @@ observeEvent(input$signin_btn,
       uporabnik <- username
       geslo <- pass
       hashGesla <- (userTable %>% filter(uporabnisko_ime == uporabnik) %>% collect() %>% pull(geslo))[[1]]
-      print(hashGesla)
+      #print(hashGesla)
       pass1 <- digest(pass, algo="md5")
-      print(pass1)
+      #print(pass1)
       #uporabnik vpise svoje originalno geslo, sistem pa ga prevede v hash in preveri,
       #ce se ujema s tabelo
       if(pass1 == hashGesla){
