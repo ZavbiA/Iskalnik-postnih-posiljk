@@ -226,20 +226,24 @@ output$sporocilo_<- DT::renderDataTable( DT::datatable(najdi.komentar()) %>% DT:
 observe({
   poste <- dbGetQuery(conn, build_sql("SELECT postna_stevilka FROM poste", con = conn))
   updateSelectInput(session, "postna_stevilka", choices=poste)
+
 })
 
 ## poizvedba za stevilo vmesnih, koncnih in oddanih posiljk na izbrani posti
 najdi_posiljke <- reactive({
   input$postna_stevilka
-  naziv_poste <- dbGetQuery(conn, build_sql("SELECT naziv_poste FROM poste WHERE postna_stevilka =",input$postna_stevilka, con = conn))
-  stevilo_vmesnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM vmesno_nahajalisce WHERE vmesna_posta LIKE ",input$postna_stevilka,con = conn))
-  stevilo_koncnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM koncno_nahajalisce WHERE posta_prispetja LIKE ",input$postna_stevilka, con = conn))   
-  stevilo_oddanih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM osebe WHERE prebivalisce LIKE ",naziv_poste,con = conn))  
-  
+  naziv_poste <- dbGetQuery(conn, build_sql("SELECT naziv_poste FROM poste WHERE postna_stevilka =" ,input$postna_stevilka,con = conn))
+  stevilo_vmesnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM vmesno_nahajalisce WHERE vmesna_posta =",input$postna_stevilka,con = conn))
+  stevilo_koncnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM koncno_nahajalisce WHERE posta_prispetja =",input$postna_stevilka,con = conn))   
+  stevilo_oddanih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM osebe WHERE prebivalisce =" ,naziv_poste, con = conn))  
+  v<- c(stevilo_vmesnih,stevilo_koncnih,stevilo_oddanih)
+  View(v)
 })
 ## prikaz zgornje poizvedbe
 
-output$stevilo_posiljk<- renderPlot ({
+output$stevilo_posiljk<- DT::renderDataTable( DT::datatable(najdi_posiljke())) 
+  # renderPlot ({
+  # najdi_posiljke()
   # input$postna_stevilka
   # 
   # naziv_poste <- dbGetQuery(conn, build_sql("SELECT naziv_poste FROM poste WHERE postna_stevilka =",input$postna_stevilka, con = conn))
@@ -254,7 +258,7 @@ output$stevilo_posiljk<- renderPlot ({
   # 
   
 
-})
+# })
 
 })
 #-------------------------------------------------------------------------------------------------

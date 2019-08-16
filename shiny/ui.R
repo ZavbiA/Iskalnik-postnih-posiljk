@@ -56,7 +56,7 @@ ui <- fluidPage(
                                  h2("Stevilo posiljk na posamezni posti"),
                                  selectInput("postna_stevilka", label ="Izberite postno stevilko",
                                              choices = NULL),
-                                 mainPanel(plotOutput("stevilo_posiljk")
+                                 mainPanel(DT :: dataTableOutput("stevilo_posiljk")
                                  ) )
                          
                                   # verbatimTextOutput("value")),
