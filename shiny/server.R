@@ -219,7 +219,21 @@ najdi.komentar <- reactive({
     
 # output$sporocilo_<- DT::renderDataTable( DT::datatable(najdi.komentar()) %>%DT::formatDate("Cas", method="toLocaleString"))%>%DT::formatStyle(columns = c('Uporabnik', 'Sporocilo','Cas'), color = 'black')
 output$sporocilo_<- DT::renderDataTable( DT::datatable(najdi.komentar()) %>% DT::formatDate("Cas", method="toLocaleString") %>% DT::formatStyle(columns = c('Uporabnik', 'Sporocilo','Cas'), color = 'black') )
+##statistika
+
+output$stevilo_posiljk<- renderPlot({
   
+  naziv_poste <- poste %>% filter(postna_stevilka == input$postna_stevilka)
+  naziv_poste <- naziv_poste[2]
+  
+  stevilo_vmesnih <- nrow(vmesno_nahajalisce %>% filter(vmesna_posta == input$postna_stevilka))
+  stevilo_koncnih <- nrow(koncno_nahajalisce %>% filter(posta_prispetja == input$postna_stevilka))
+  stevilo_oddanih <- nrow(osebe %>% filter(prebivalisce == "naziv_poste"))
+  d <- data.frame("vrednost" = c(stevilo_vmesnih, stevilo_koncnih, stevilo_oddanih), "ime" = c("Stevilo posiljk na vmesni posti", "Stevilo posiljk, ki so prispele", "Stevilo oddanih posiljk") )
+  ggplot( data = d, aes(x= ime, y = vrednost)) + geom_col() + ggtitle("Število pošiljk na pošti")
+  
+  
+})  
 
 })
 #-------------------------------------------------------------------------------------------------
