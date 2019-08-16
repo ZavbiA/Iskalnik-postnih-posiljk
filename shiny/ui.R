@@ -55,7 +55,7 @@ ui <- fluidPage(
                          tabItem(tabName = "statistika",
                                  h2("Stevilo posiljk na posamezni posti"),
                                  selectInput("postna_stevilka", label ="Izberite postno stevilko",
-                                             choices = sort(unique(poste$postna_stevilka))),
+                                             choices = NULL),
                                  mainPanel(plotOutput("stevilo_posiljk")
                                  ) )
                          
