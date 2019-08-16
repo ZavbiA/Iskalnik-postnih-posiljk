@@ -24,12 +24,13 @@ ui <- fluidPage(
   
   sidebarLayout(
     sidebarPanel(
+      sidebarMenu(
       menuItem("Navodila",tabName = "navodila", selected = TRUE),
       menuItem("Poslane posiljke", tabName = "poslane", selected = FALSE),
       menuItem("Prejete posiljke", tabName = "prejete", selected = FALSE),
       menuItem("Pomoč uporabnikom" ,tabName = "pomoc", selected = FALSE) ,
       menuItem("Poštna statistika",tabName = "statistika", icon = icon("stat"))
-    ),
+    )),
 
     mainPanel(
      
