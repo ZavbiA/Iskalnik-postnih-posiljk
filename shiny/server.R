@@ -7,7 +7,7 @@ library(digest)
 #library(dbplyr)
 
 #ČE TI KDAJ NAPISE  DA SI PRESEGEL MAX POVEZAV, ZAZENI TO:
-#RPostgreSQL::dbDisconnect(RPostgreSQL::dbListConnections(RPostgreSQL::PostgreSQL())[[1]]) 
+RPostgreSQL::dbDisconnect(RPostgreSQL::dbListConnections(RPostgreSQL::PostgreSQL())[[1]]) 
 
 source("auth.R") #Skopiraj svoj osebni auth.R v mapo shiny
 
@@ -211,7 +211,7 @@ najdi.komentar <- reactive({
     sql_komentar <- build_sql("SELECT uporabnisko_ime AS \"Uporabnik\", besedilo AS \"Sporocilo\", cas AS \"Cas\" FROM sporocilo
                             WHERE uporabnisko_ime =",uporabnik(), con = conn)
     komentarji <- dbGetQuery(conn, sql_komentar)
-    validate(need(nrow(komentarji) > 0, "Pustite sporočilo"))
+    validate(need(nrow(komentarji) > 0, "Niste poslali še nubenega sporočila"))
     # validate(need( nrow(komentarji) == 0, "Spodaj so vaša že poslana sporočila" ))
     
     komentarji
