@@ -73,6 +73,3 @@ koncno_nahajalisce<-koncno_nahajalisce[,-c(3,4)]
 #zbrisemo datum prispe iz tabele posiljke, ker je v drugi tabeli koncno nahajalisce
 posiljke <- posiljke[,-c(4)]
 
-
-# 129912621.0
-# 0122014e362da01e3c50ce67747ec907

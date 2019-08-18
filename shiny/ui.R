@@ -56,17 +56,16 @@ ui <- fluidPage(
                                  h2("Stevilo posiljk na posamezni posti"),
                                  selectInput("postna_stevilka", label ="Izberite postno stevilko",
                                              choices = NULL),
-                                 mainPanel(DT :: dataTableOutput("stevilo_posiljk")
+                                 mainPanel(tableOutput("stevilo_vmesnih"),
+                                           tableOutput("stevilo_koncnih")
+                                           
                                  ) )
                          
-                                  # verbatimTextOutput("value")),
-                                  
-                                  # DT::dataTableOutput("sporocilo_")
+                                 
                          )
                        
                        )
-      # tabPanel(tabName = "pomoc", h2("Pusti sporoči") )
-                         
+                       
                
                        
                        

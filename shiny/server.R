@@ -127,21 +127,6 @@ observeEvent(input$signin_btn,
   
   #  iz baze bomo uvozili vse mozne posiljke za uporabnika
   
-  # uvoz_posiljk <- function(username){
-  #   q_datum_oddaje_posiljatelj <- dbGetQuery("SELECT datum_oddaje FROM posiljke WHERE posiljatelj =", username,con = conn)
-  #   q_datum_prispe_posiljatelj <- dbGetQuery("SELECT datum_oddaje FROM posiljke WHERE naslovnik =", username,con = conn)
-  # 
-  # 
-  #   
-  # }
-  # observe ({
-  #   updateTextInput(session,"posiljke","Posiljke",
-  #                     choices = uvoz_posiljk
-  #   )
-  #   
-  # })
-  
-  
 ## oddane posiljke
  oddane <- reactive({
     oddane_posiljke_data <- dbGetQuery(conn, build_sql("SELECT  posiljke.ID AS \"Stevilka posiljke\", posiljke.datum_oddaje AS \"Datum oddaje\",
@@ -230,56 +215,50 @@ observe({
 })
 
 ## poizvedba za stevilo vmesnih, koncnih in oddanih posiljk na izbrani posti
-najdi_posiljke <- reactive({
+najdi_vmesne <- reactive({
   input$postna_stevilka
-  naziv_poste <- dbGetQuery(conn, build_sql("SELECT naziv_poste FROM poste WHERE postna_stevilka =" ,input$postna_stevilka,con = conn))
-  stevilo_vmesnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM vmesno_nahajalisce WHERE vmesna_posta =",input$postna_stevilka,con = conn))
-  stevilo_koncnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM koncno_nahajalisce WHERE posta_prispetja =",input$postna_stevilka,con = conn))   
-  stevilo_oddanih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM osebe WHERE prebivalisce = '" ,naziv_poste,"'", con = conn))  
-  v<- c(stevilo_vmesnih,stevilo_koncnih,stevilo_oddanih)
-  View(v)
+  stevilo_vmesnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) AS \"na vmesnem nahajaliscu\" FROM vmesno_nahajalisce WHERE vmesna_posta =",input$postna_stevilka,con = conn))
+
+  stevilo_vmesnih
 })
+najdi_koncne <- reactive({
+  input$postna_stevilka
+  # naziv_poste <- dbGetQuery(conn, build_sql("SELECT naziv_poste FROM poste WHERE postna_stevilka =" ,input$postna_stevilka,con = conn))
+  stevilo_koncnih <- dbGetQuery(conn, build_sql("SELECT COUNT(*)AS \"prispele\" FROM koncno_nahajalisce WHERE posta_prispetja =",input$postna_stevilka,con = conn))   
+  stevilo_koncnih
+})
+
+# najdi_oddane <- reactive({
+#   input$postna_stevilka
+#   naziv_poste <- dbGetQuery(conn, build_sql("SELECT naziv_poste FROM poste WHERE postna_stevilka =" ,input$postna_stevilka,con = conn))
+#   stevilo_oddanih <- dbGetQuery(conn, build_sql("SELECT COUNT(*) FROM osebe WHERE prebivalisce = '" ,naziv_poste(),"'", con = conn))
+#   
+#   return(stevilo_oddanih)
+#   
+# })
+# naziv_poste <- reactive({
+#   input$postna_stevilka
+#   naziv <- dbGetQuery(conn, build_sql("SELECT naziv_poste FROM poste WHERE postna_stevilka =" ,input$postna_stevilka,con = conn))
+#   naziv
+# })
 ## prikaz zgornje poizvedbe
 
-# SELECT COUNT(*) AS Type FROM vmesno_nahajalisce WHERE vmesna_posta = 4248
-# UNION
-# SELECT COUNT(*) As Typedve FROM koncno_nahajalisce WHERE posta_prispetja = 4248
-# UNION 
-# 
-# 
-# (SELECT vmesna_posta, COUNT(*) AS "st_vmesnih" FROM vmesno_nahajalisce WHERE vmesna_posta = 4246
-#   GROUP BY 1)
-# LEFT JOIN ( SELECT posta_prispetja, COUNT(*) AS "st_koncnih" FROM koncno_nahajalisce WHERE posta_prispetja = 4248
-#             GROUP BY 1 ) koncno_nahajalisce ON koncno_nahajalisce.posta_prispejta = vmesno_nahajalisce.vmesna_posta
-# 
-# 
-# 
-# SELECT  posta_prispetja AS "posta", COUNT( posta_prispetja) AS "st_prispelih" FROM koncno_nahajalisce 
-# JOIN poste ON poste.postna_stevilka = koncno_nahajalisce.posta_prispetja
-# GROUP BY 1
-# 
-# 
-# SELECT  posta_prispetja AS "posta", COUNT( posta_prispetja) AS "st_prispelih" FROM koncno_nahajalisce 
-# JOIN poste ON poste.postna_stevilka = koncno_nahajalisce.posta_prispetja
-# GROUP BY 1
-# SELECT vmesna_posta AS "posta", COUNT(vmesna_posta) AS "st_vmesnih" FROM vmesno_nahajalisce
-# LEFT JOIN poste ON poste.postna_stevilka = vmesno_nahajalisce.vmesna_posta 
-# GROUP BY 1
-# 
-# 
-# SELECT postna_stevilka FROM poste
-# LEFT JOIN  ( SELECT vmesna_posta, COUNT(vmesna_posta) AS "st_vmesnih" FROM vmesno_nahajalisce 
-#              GROUP BY 1) 
-# ON poste.postna_stevilka = vmesno_nahajalisce.vmesna_posta
-# LEFT JOIN (SELECT posta_prispetja, COUNT(posta_prispetja) AS 'st_koncnih' FROM koncno_nahajalisce
-#            GROUP BY 1)  
-# ON poste.postna_stevilka = koncno_nahajalisce.posta_prispetja
-# 
-# 
+output$stevilo_koncnih<- renderTable({
+
+  tabela1 = najdi_koncne()
+  
 
 
+}, align = 'c')
 
-output$stevilo_posiljk<- DT::renderDataTable( DT::datatable(najdi_posiljke())) 
+output$stevilo_vmesnih <- renderTable({
+
+  tabela1 = najdi_vmesne()
+
+
+}, align = 'l')
+
+
   # renderPlot ({
   # najdi_posiljke()
   # input$postna_stevilka
