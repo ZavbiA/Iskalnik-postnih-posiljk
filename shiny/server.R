@@ -10,7 +10,7 @@ source("auth_public.R")
 #ČE TI KDAJ NAPISE  DA SI PRESEGEL MAX POVEZAV, ZAZENI TO:
 #RPostgreSQL::dbDisconnect(RPostgreSQL::dbListConnections(RPostgreSQL::PostgreSQL())[[1]])
 
-source("auth.R") #Skopiraj svoj osebni auth.R v mapo shiny
+# source("auth.R") #Skopiraj svoj osebni auth.R v mapo shiny
 
 #Za probleme s sumniki uporabi:
 original.locale <- Sys.getlocale(category="LC_CTYPE")       ## "English_Slovenia.1252" pri meni
