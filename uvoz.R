@@ -15,9 +15,6 @@ osebe$uporabnisko_ime <- gsub("-", "", osebe$uporabnisko_ime) %>% parse_number()
 # osebe$uporabnisko_ime <- toString(osebe$uporabnisko_ime)
 osebe$telefonska <- gsub("-", "", osebe$telefonska) %>% parse_number()
 
-#129912621
-#ryGI1jZtKq
-
 osebe$geslo <- as.character(osebe$geslo)
 #Prvemu uporabniku spremenimo uporabnisko ime in geslo, da se bomo lazje vpisovali
 osebe$uporabnisko_ime[1] <- "test"

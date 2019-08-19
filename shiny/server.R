@@ -4,7 +4,7 @@ library(RPostgreSQL)
 library(hash)
 library(digest)
 # source("../lib/libraries.R")
-source("auth_public.r")
+source("auth_public.R")
 #library(dbplyr)
 
 #ČE TI KDAJ NAPISE  DA SI PRESEGEL MAX POVEZAV, ZAZENI TO:
